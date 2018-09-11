@@ -13,3 +13,7 @@ Naming/FileName:
 Bundler/DuplicatedGem:
   Exclude:
     - 'Gemfile'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/models/file_set_spec.rb'
