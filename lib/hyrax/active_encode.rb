@@ -1,8 +1,8 @@
 # frozen_string_literal: true
-require "hyrax/iiif_av/engine"
+require "hyrax/active_encode/engine"
 
 module Hyrax
-  module IiifAv
+  module ActiveEncode
     # Your code goes here...
   end
 end

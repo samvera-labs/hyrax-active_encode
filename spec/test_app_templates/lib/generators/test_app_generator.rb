@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-# frozen_string_literal: true
 require 'rails/generators'
 
 class TestAppGenerator < Rails::Generators::Base
@@ -10,6 +9,6 @@ class TestAppGenerator < Rails::Generators::Base
   # after setting up the application
 
   def install_engine
-    generate 'hyrax-iiif_av:install'
+    generate 'hyrax-active_encode:install'
   end
 end

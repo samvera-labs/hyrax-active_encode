@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 module Hyrax
-  module IiifAv
+  module ActiveEncode
     class Engine < ::Rails::Engine
-      isolate_namespace Hyrax::IiifAv
+      isolate_namespace Hyrax::ActiveEncode
     end
   end
 end

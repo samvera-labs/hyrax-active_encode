@@ -8,7 +8,7 @@ AllCops:
 Naming/FileName:
   Exclude:
     - 'Gemfile'
-    - 'hyrax-iiif_av.gemspec'
+    - 'hyrax-active_encode.gemspec'
 
 Bundler/DuplicatedGem:
   Exclude:
