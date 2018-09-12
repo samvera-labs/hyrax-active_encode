@@ -17,3 +17,4 @@ Bundler/DuplicatedGem:
 Metrics/BlockLength:
   Exclude:
     - 'spec/models/file_set_spec.rb'
+    - 'spec/services/active_encode_derivative_service_spec.rb'
