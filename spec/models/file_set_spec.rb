@@ -18,27 +18,54 @@ describe FileSet do
     Object.send(:remove_const, :ActiveEncodeFileSet)
   end
 
-  describe '#files_metadata' do
+  describe '#build_derivative' do
     let(:file_set) { ActiveEncodeFileSet.new }
-    let(:file_1) { Hydra::PCDM::File.new }
-    let(:file_metadata) { [{ id: 'an_id', label: 'high', external_file_uri: 'http://test.file' }] }
+    let(:derivative) { file_set.build_derivative }
+
+    it 'returns a PCDM service file' do
+      expect(derivative.metadata_node.type).to include(::RDF::URI('http://pcdm.org/use#ServiceFile'))
+    end
+
+    it 'adds it to the file set' do
+      expect { file_set.build_derivative }.to change { file_set.files.size }.from(0).to(1)
+    end
+  end
+
+  describe '#derivatives' do
+    let(:file_set) { ActiveEncodeFileSet.new }
+    let!(:derivative) { file_set.build_derivative }
+    let!(:other_file) { Hydra::PCDM::File.new }
+
+    before do
+      file_set.files << other_file
+    end
+
+    it 'returns only PCDM service files' do
+      expect(file_set.derivatives).to be_a Array
+      expect(file_set.derivatives).to include(derivative)
+      expect(file_set.derivatives).not_to include(other_file)
+    end
+  end
+
+  describe '#derivatives_metadata' do
+    let(:file_set) { ActiveEncodeFileSet.new }
+    let!(:file_1) do
+      file_set.build_derivative.tap do |d|
+        d.id = 'an_id'
+        d.label = 'high'
+        d.external_file_uri = 'http://test.file'
+      end
+    end
+    let(:derivatives_metadata) { [{ id: 'an_id', label: 'high', external_file_uri: 'http://test.file' }] }
     let(:indexer) { file_set.class.indexer.new(file_set) }
 
     context 'when derivative files are present' do
-      before do
-        file_1.label = 'high'
-        file_1.external_file_uri = 'http://test.file'
-        file_set.files << file_1
-        # Set the ID here after the metadata_node has been initialized to avoid a call to fedora
-        file_1.id = 'an_id'
-      end
-
-      it 'responds to files_metadata' do
-        expect(file_set.files_metadata).to eq(file_metadata)
+      it 'responds to derivatives_metadata' do
+        expect(file_set.derivatives_metadata).to eq(derivatives_metadata)
       end
 
       it 'responds to to_solr' do
-        expect(indexer.generate_solr_document['files_metadata_ssi']).to eq(file_metadata.to_json)
+        expect(indexer.generate_solr_document['derivatives_metadata_ssi']).to eq(derivatives_metadata.to_json)
       end
     end
   end

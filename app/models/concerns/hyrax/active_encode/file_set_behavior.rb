@@ -11,8 +11,19 @@ module Hyrax
         ActiveFedora::WithMetadata::DefaultMetadataClassFactory.file_metadata_schemas += [ActiveFedora::WithMetadata::ExternalFileUriSchema]
       end
 
-      def files_metadata
-        files.collect { |f| { id: f.id, label: f.label.first, external_file_uri: f.external_file_uri.first } }
+      def build_derivative
+        derivative = Hydra::PCDM::File.new
+        derivative.metadata_node.type << ::RDF::URI('http://pcdm.org/use#ServiceFile')
+        files << derivative
+        derivative
+      end
+
+      def derivatives
+        files.select { |f| f.metadata_node.type.include? ::RDF::URI('http://pcdm.org/use#ServiceFile') }
+      end
+
+      def derivatives_metadata
+        derivatives.collect { |f| { id: f.id, label: f.label.first, external_file_uri: f.external_file_uri.first } }
       end
     end
   end
