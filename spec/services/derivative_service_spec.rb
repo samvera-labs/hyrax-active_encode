@@ -8,17 +8,7 @@ describe Hyrax::DerivativeService do
   end
 
   describe '#for' do
-    before(:all) do
-      class ActiveEncodeFileSet < ::FileSet
-        include Hyrax::ActiveEncode::FileSetBehavior
-      end
-    end
-
-    after(:all) do
-      Object.send(:remove_const, :ActiveEncodeFileSet)
-    end
-
-    let(:file_set) { ActiveEncodeFileSet.new }
+    let(:file_set) { ::FileSet.new }
 
     before do
       allow(file_set).to receive(:mime_type).and_return("video/mp4")
