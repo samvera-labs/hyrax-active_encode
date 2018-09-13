@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'shared_specs/derivative_service'
 
 describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
   before(:all) do
@@ -13,8 +14,15 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
     Object.send(:remove_const, :ActiveEncodeFileSet)
   end
 
+  # let(:valid_file_set) { ActiveEncodeFileSet.new(mime_type: 'video/mp4') }
+  # let(:valid_file_set) { ActiveEncodeFileSet.new.tap { |file_set| file_set.mime_type = 'video/mp4' } }
+  let(:valid_file_set) { ActiveEncodeFileSet.new }
+  allow(valid_file_set).to receive(:mime_type).and_return('video/mp4')
+
   let(:file_set) { ActiveEncodeFileSet.new }
   let(:service) { described_class.new(file_set) }
+
+  it_behaves_like "a Hyrax::DerivativeService"
 
   describe '#valid?' do
     subject { service.valid? }

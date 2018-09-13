@@ -1,8 +1,13 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'shared_specs/derivative_service'
 
 describe Hyrax::DerivativeService do
+  let(:valid_file_set) { ::FileSet.new }
+
+  it_behaves_like "a Hyrax::DerivativeService"
+
   it 'includes the ActiveEncodeDerivativeService' do
     expect(described_class.services).to include Hyrax::ActiveEncode::ActiveEncodeDerivativeService
   end

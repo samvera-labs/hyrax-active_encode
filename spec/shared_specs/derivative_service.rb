@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
 RSpec.shared_examples 'a Hyrax::DerivativeService' do
   before do
     raise 'valid_file_set must be set with `let(:valid_file_set)`' unless
