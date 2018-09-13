@@ -2,16 +2,6 @@
 module Hyrax
   module ActiveEncode
     class ActiveEncodeDerivativeService < Hyrax::DerivativeService
-      # Is this the right place for this line?
-      # Hyrax::DerivativeService.services = [Hyrax::ActiveEncode::ActiveEncodeDerivativeService] + Hyrax::DerivativeService.services
-
-      def initialize(file_set)
-        @file_set = file_set
-      end
-
-      # TODO: Implement this?
-      def cleanup_derivatives; end
-
       def create_derivatives(filename)
         # TODO: Pass encode class from configuration and other output configuration (preset?)
         job_settings = []
@@ -25,8 +15,11 @@ module Hyrax
       end
 
       def valid?
-        supported_mime_types.include?(mime_type)
+        supported_mime_types.include?(file_set.mime_type)
       end
+
+      # TODO: Implement this?
+      def cleanup_derivatives; end
 
       private
 
