@@ -14,10 +14,8 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
     Object.send(:remove_const, :ActiveEncodeFileSet)
   end
 
-  # let(:valid_file_set) { ActiveEncodeFileSet.new(mime_type: 'video/mp4') }
-  # let(:valid_file_set) { ActiveEncodeFileSet.new.tap { |file_set| file_set.mime_type = 'video/mp4' } }
-  let(:valid_file_set) { ActiveEncodeFileSet.new }
-  allow(valid_file_set).to receive(:mime_type).and_return('video/mp4')
+  let(:original_file) { Hydra::PCDM::File.new(miem_type: 'video/mp4') }
+  let(:valid_file_set) { ActiveEncodeFileSet.new.tap { |file_set| file_set.original_file = original_file } }
 
   let(:file_set) { ActiveEncodeFileSet.new }
   let(:service) { described_class.new(file_set) }
