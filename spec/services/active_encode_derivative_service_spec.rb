@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
-require 'shared_specs/derivative_service'
+require 'hyrax/specs/shared_specs'
 
 describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
   before(:all) do
@@ -14,8 +14,12 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
     Object.send(:remove_const, :ActiveEncodeFileSet)
   end
 
-  let(:original_file) { Hydra::PCDM::File.new(miem_type: 'video/mp4') }
-  let(:valid_file_set) { ActiveEncodeFileSet.new.tap { |file_set| file_set.original_file = original_file } }
+  let(:valid_file_set) { ActiveEncodeFileSet.new }
+  let(:valid_mime) { service.send(:supported_mime_types).sample }
+
+  before do
+    allow(valid_file_set).to receive(:mime_type).and_return(valid_mime)
+  end
 
   let(:file_set) { ActiveEncodeFileSet.new }
   let(:service) { described_class.new(file_set) }
@@ -24,6 +28,19 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
 
   describe '#valid?' do
     subject { service.valid? }
+
+    context 'all supported mime types' do
+      let(:supported_mime_types) { service.send(:supported_mime_types) }
+
+      it 'supports expected mime types' do
+        supported_mime_types.each do |mime|
+          file_set = ActiveEncodeFileSet.new
+          allow(file_set).to receive(:mime_type).and_return(mime)
+          service = described_class.new(file_set)
+          expect(service.valid?).to be true
+        end
+      end
+    end
 
     context 'with video original file' do
       before do

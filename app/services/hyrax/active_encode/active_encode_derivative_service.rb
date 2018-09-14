@@ -15,7 +15,7 @@ module Hyrax
       end
 
       def valid?
-        supported_mime_types.include?(file_set.mime_type)
+        supported_mime_types.include?(file_set.mime_type) && file_set.class.include?(Hyrax::ActiveEncode::FileSetBehavior)
       end
 
       # TODO: Implement this?
