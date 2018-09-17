@@ -7,15 +7,35 @@ describe Hyrax::DerivativeService do
     expect(described_class.services).to include Hyrax::ActiveEncode::ActiveEncodeDerivativeService
   end
 
-  describe '#for' do
-    let(:file_set) { ::FileSet.new }
+  it 'still includes Hyrax::FileSetDerivativeService' do
+    expect(described_class.services).to include Hyrax::FileSetDerivativesService
+  end
 
-    before do
-      allow(file_set).to receive(:mime_type).and_return("video/mp4")
+  describe '#for' do
+    before(:all) do
+      class ActiveEncodeFileSet < ::FileSet
+        include Hyrax::ActiveEncode::FileSetBehavior
+      end
     end
 
-    it 'returns ActiveEncodeDerivativeService for a video file' do
-      expect(described_class.for(file_set)).to be_a Hyrax::ActiveEncode::ActiveEncodeDerivativeService
+    after(:all) do
+      Object.send(:remove_const, :ActiveEncodeFileSet)
+    end
+
+    let(:valid_file_set) { ActiveEncodeFileSet.new }
+    let(:invalid_file_set) { ::FileSet.new }
+
+    before do
+      allow(valid_file_set).to receive(:mime_type).and_return("video/mp4")
+      allow(invalid_file_set).to receive(:mime_type).and_return("video/mp4")
+    end
+
+    it 'returns ActiveEncodeDerivativeService for a valid video file' do
+      expect(described_class.for(valid_file_set)).to be_a Hyrax::ActiveEncode::ActiveEncodeDerivativeService
+    end
+
+    it 'returns FileSetDerivativeService for an invalid video file' do
+      expect(described_class.for(invalid_file_set)).to be_a Hyrax::FileSetDerivativesService
     end
   end
 end
