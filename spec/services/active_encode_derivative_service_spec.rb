@@ -36,8 +36,7 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
         supported_mime_types.each do |mime|
           file_set = ActiveEncodeFileSet.new
           allow(file_set).to receive(:mime_type).and_return(mime)
-          service = described_class.new(file_set)
-          expect(service.valid?).to be true
+          expect(described_class.new(file_set).valid?).to be true
         end
       end
     end
