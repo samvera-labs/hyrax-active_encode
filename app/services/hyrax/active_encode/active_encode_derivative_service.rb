@@ -1,10 +1,12 @@
 # frozen_string_literal: true
+require 'active_encode'
+
 module Hyrax
   module ActiveEncode
     class ActiveEncodeDerivativeService < Hyrax::DerivativeService
       attr_accessor :encode_class, :options_service_class
 
-      def initialize(file_set, encode_class: ActiveEncode::Base, options_service_class: nil)
+      def initialize(file_set, encode_class: ::ActiveEncode::Base, options_service_class: nil)
         super(file_set)
         @encode_class = encode_class
         @options_service_class = options_service_class
