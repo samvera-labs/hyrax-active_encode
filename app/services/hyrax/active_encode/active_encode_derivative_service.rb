@@ -13,7 +13,7 @@ module Hyrax
       end
 
       def create_derivatives(filename)
-        options = options_service_class(@file_set).call if options_service_class
+        options = options_service_class.call(@file_set) if options_service_class
         options ||= default_outputs(@file_set)
         Hydra::Derivatives::ActiveEncodeDerivatives.create(filename, outputs: options, encode_class: @encode_class)
       end
@@ -41,9 +41,9 @@ module Hyrax
           # Defaults adapted from hydra-derivatives
           audio_encoder = Hydra::Derivatives::AudioEncoder.new
           case file_set
-          when audio?
+          when file_set.audio?
             [{ label: 'mp4', ffmpeg_opt: "320x240 -ac 2 -ab 96k -ar 44100 -acodec #{audio_encoder.audio_encoder}" }]
-          when video?
+          when file_set.video?
             [{ label: 'mp4', ffmpeg_opt: "320x240 -g 30 -b:v 345k -ac 2 -ab 96k -ar 44100 -vcodec libx264 -acodec #{audio_encoder.audio_encoder}" }]
           else
             []

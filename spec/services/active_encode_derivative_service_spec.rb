@@ -22,7 +22,9 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
   end
 
   let(:file_set) { ActiveEncodeFileSet.new }
-  let(:service) { described_class.new(file_set) }
+  let(:encode_class) { ::ActiveEncode::Base }
+  let(:options_service_class) { nil }
+  let(:service) { described_class.new(file_set, encode_class: encode_class, options_service_class: options_service_class) }
 
   it_behaves_like "a Hyrax::DerivativeService"
 
@@ -67,13 +69,32 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
   end
 
   describe '#create_derivatives' do
-    it 'calls the ActiveEncode runner with the original file' do
+    subject { service.create_derivatives("sample.mp4") }
 
+    it 'calls the ActiveEncode runner with the original file' do
+      expect(subject).to receive(:Hydra::Derivatives::ActiveEncodeDerivatives.create).with("sample.mp4")
+      subject
     end
 
     it 'passes the encode class' do
-
+      expect(subject).to receive(:Hydra::Derivatives::ActiveEncodeDerivatives.create).with(encode_class)
+      subject
     end
+
+    context "when output option is not provided" do
+      it 'passes the default option' do
+
+      end
+    end
+
+    context "when output option is provided" do
+      let(:options_service_class) { Hyrax::ActiveEncode::OptionService }
+
+      it 'passes the provided option' do
+
+      end
+    end
+
   end
 
   # describe '#cleanup_derivatives' do
