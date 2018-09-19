@@ -13,13 +13,14 @@ describe Hyrax::ActiveEncode::OptionService do
     Object.send(:remove_const, :ActiveEncodeFileSet)
   end
 
-  let(:file_set) { ActiveEncodeFileSet.new }
-
   describe '#self.call' do
+    let(:file_set) { ActiveEncodeFileSet.new }
     subject { described_class.call(file_set) }
 
     context 'with audio file set' do
-      allow(file_set).to receive(:audio?).and_return(true)
+      before do
+        allow(file_set).to receive(:audio?).and_return(true)
+      end
 
       it 'returns a hash array containing audio format options' do
         expect(subject).to be_an(Array)
@@ -32,7 +33,9 @@ describe Hyrax::ActiveEncode::OptionService do
     end
 
     context 'with video file set' do
-      allow(file_set).to receive(:video?).and_return(true)
+      before do
+        allow(file_set).to receive(:video?).and_return(true)
+      end
 
       it 'returns a hash array containing video format options' do
         expect(subject).to be_an(Array)
