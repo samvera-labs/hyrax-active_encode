@@ -66,16 +66,16 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
     end
   end
 
-  # describe '#create_derivatives' do
-  #   it 'calls the ActiveEncode runner with the original file' do
-  #
-  #   end
-  #
-  #   it 'passes the encode class' do
-  #
-  #   end
-  # end
-  #
+  describe '#create_derivatives' do
+    it 'calls the ActiveEncode runner with the original file' do
+
+    end
+
+    it 'passes the encode class' do
+
+    end
+  end
+
   # describe '#cleanup_derivatives' do
   # end
 

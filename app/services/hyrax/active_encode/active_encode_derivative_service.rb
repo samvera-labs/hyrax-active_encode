@@ -13,7 +13,7 @@ module Hyrax
       end
 
       def create_derivatives(filename)
-        options = options_service_class.new(@file_set).call if options_service_class
+        options = options_service_class(@file_set).call if options_service_class
         options ||= default_outputs(@file_set)
         Hydra::Derivatives::ActiveEncodeDerivatives.create(filename, outputs: options, encode_class: @encode_class)
       end
