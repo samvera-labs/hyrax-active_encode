@@ -38,13 +38,13 @@ module Hyrax
         end
 
         def default_outputs(file_set)
-          # Defaults adapted from hydra-derivatives
+          # Defaults adapted from hydra-derivatives (missing webm derivative)
           audio_encoder = Hydra::Derivatives::AudioEncoder.new
           case file_set
           when file_set.audio?
-            [{ label: 'mp4', ffmpeg_opt: "320x240 -ac 2 -ab 96k -ar 44100 -acodec #{audio_encoder.audio_encoder}" }]
+            [{ outputs: [{ label: 'mp4', ffmpeg_opt: "-s 320x240 -ac 2 -ab 96k -ar 44100 -acodec #{audio_encoder.audio_encoder}" }] }]
           when file_set.video?
-            [{ label: 'mp4', ffmpeg_opt: "320x240 -g 30 -b:v 345k -ac 2 -ab 96k -ar 44100 -vcodec libx264 -acodec #{audio_encoder.audio_encoder}" }]
+            [{ outputs: [{ label: 'mp4', ffmpeg_opt: "-s 320x240 -g 30 -b:v 345k -ac 2 -ab 96k -ar 44100 -vcodec libx264 -acodec #{audio_encoder.audio_encoder}" }] }]
           else
             []
           end
