@@ -15,7 +15,7 @@ module Hyrax
       end
 
       initializer "hyrax.active_encode.output_service" do
-        Hydra::Derivatives.output_file_service = Hyrax::ActiveEncode::PersistActiveEncodeDerivatives
+        Hydra::Derivatives::ActiveEncodeDerivatives.output_file_service = Hyrax::ActiveEncode::PersistActiveEncodeDerivatives
       end
     end
   end
