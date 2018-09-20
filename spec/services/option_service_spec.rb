@@ -24,10 +24,11 @@ describe Hyrax::ActiveEncode::OptionService do
 
       it 'returns a hash array containing audio format options' do
         expect(subject).to be_an(Array)
+        expect(subject).not_to be_empty
         subject.each do |hash|
           expect(hash).to be_a(Hash)
-          expect(hash).to include('label')
-          expect(hash).to include('ffmpeg_opt')
+          expect(hash).to include(:label)
+          expect(hash).to include(:ffmpeg_opt)
         end
       end
     end
@@ -39,10 +40,11 @@ describe Hyrax::ActiveEncode::OptionService do
 
       it 'returns a hash array containing video format options' do
         expect(subject).to be_an(Array)
+        expect(subject).not_to be_empty
         subject.each do |hash|
           expect(hash).to be_a(Hash)
-          expect(hash).to include('label')
-          expect(hash).to include('ffmpeg_opt')
+          expect(hash).to include(:label)
+          expect(hash).to include(:ffmpeg_opt)
         end
       end
     end

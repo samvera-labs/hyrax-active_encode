@@ -71,28 +71,56 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
   describe '#create_derivatives' do
     subject { service.create_derivatives("sample.mp4") }
 
-    it 'calls the ActiveEncode runner with the original file' do
-      expect(subject).to receive(:Hydra::Derivatives::ActiveEncodeDerivatives.create).with("sample.mp4")
-      subject
-    end
-
-    it 'passes the encode class' do
-      expect(subject).to receive(:Hydra::Derivatives::ActiveEncodeDerivatives.create).with(encode_class)
-      subject
-    end
-
     context "when output option is not provided" do
-      it 'passes the default option' do
+      let(:audio_encoder) { Hydra::Derivatives::AudioEncoder.new }
 
+      context "for audio file set" do
+        before do
+          allow(file_set).to receive(:audio?).and_return(true)
+        end
+
+        # TODO can we do a fuzzy checking on options, just to make sure it includes lable and ffmpeg_opt
+        # with(hash_including), with(<matcher>)?
+        let(:options) { [{ label: 'mp4', ffmpeg_opt: "320x240 -ac 2 -ab 96k -ar 44100 -acodec #{audio_encoder.audio_encoder}" }] }
+
+        it 'calls the ActiveEncode runner with the original file, passing the encode class and the default audio options' do
+          expect(Hydra::Derivatives::ActiveEncodeDerivatives).to receive(:create).with("sample.mp4", encode_class: encode_class, outputs: options)
+          subject
+        end
+      end
+
+      context "for video file set" do
+        before do
+          allow(file_set).to receive(:video?).and_return(true)
+        end
+
+        # TODO can we do a fuzzy checking on options, just to make sure it includes lable and ffmpeg_opt
+        # with(hash_including), with(<matcher>)?
+        let(:options) { [{ label: 'mp4', ffmpeg_opt: "320x240 -g 30 -b:v 345k -ac 2 -ab 96k -ar 44100 -vcodec libx264 -acodec #{audio_encoder.audio_encoder}" }] }
+
+        it 'calls the ActiveEncode runner with the original file, passing the encode class and the default video options' do
+          expect(Hydra::Derivatives::ActiveEncodeDerivatives).to receive(:create).with("sample.mp4", encode_class: encode_class, outputs: options)
+          subject
+        end
+      end
+
+      context "for non-AV file set" do
+        it 'calls the ActiveEncode runner with the original file, passing the encode class and the default empty options' do
+          expect(Hydra::Derivatives::ActiveEncodeDerivatives).to receive(:create).with("sample.mp4", encode_class: encode_class, outputs: [])
+          subject
+        end
       end
     end
 
     context "when output option is provided" do
       let(:options_service_class) { Hyrax::ActiveEncode::OptionService }
+      let(:options) { options_service_class.call(file_set) }
 
-      it 'passes the provided option' do
-
+      it 'calls the ActiveEncode runner with the original file, passing the encode class and the provided output options' do
+        expect(Hydra::Derivatives::ActiveEncodeDerivatives).to receive(:create).with("sample.mp4", encode_class: encode_class, outputs: options)
+        subject
       end
+
     end
 
   end
