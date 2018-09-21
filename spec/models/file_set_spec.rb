@@ -18,22 +18,29 @@ describe FileSet do
     Object.send(:remove_const, :ActiveEncodeFileSet)
   end
 
-  let(:file_set) { ActiveEncodeFileSet.new }
+  let(:file_set) { ActiveEncodeFileSet.create }
   let(:derivative) do
     file_set.build_derivative.tap do |d|
-      d.id = 'an_id'
       d.label = 'high'
       d.external_file_uri = 'http://test.file'
+      d.content = ''
     end
   end
 
   describe '#build_derivative' do
     it 'returns a PCDM service file' do
-      expect(derivative.metadata_node.type).to include(::RDF::URI('http://pcdm.org/use#ServiceFile'))
+      expect(file_set.build_derivative.metadata_node.type).to include(::RDF::URI('http://pcdm.org/use#ServiceFile'))
     end
 
     it 'adds it to the file set' do
       expect { file_set.build_derivative }.to change { file_set.files.size }.from(0).to(1)
+    end
+
+    it 'persists correctly' do
+      expect(derivative).not_to be_persisted
+      file_set.save
+      expect(derivative).to be_persisted
+      expect(file_set.reload.derivatives).to include derivative
     end
   end
 
@@ -53,8 +60,7 @@ describe FileSet do
   end
 
   describe '#derivatives_metadata' do
-    let(:file_set) { ActiveEncodeFileSet.new }
-    let(:derivatives_metadata) { [{ id: 'an_id', label: 'high', external_file_uri: 'http://test.file' }] }
+    let(:derivatives_metadata) { [{ id: derivative.id, label: 'high', external_file_uri: 'http://test.file' }] }
     let(:indexer) { file_set.class.indexer.new(file_set) }
 
     before do

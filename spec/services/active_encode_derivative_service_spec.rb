@@ -129,10 +129,10 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
   # end
 
   describe '#derivative_url' do
+    let(:file_set) { ActiveEncodeFileSet.create }
     let(:external_uri) { "http://test.file" }
     let(:derivative) do
       file_set.build_derivative.tap do |d|
-        d.id = 'an_id'
         d.label = 'high'
         d.external_file_uri = external_uri
       end
