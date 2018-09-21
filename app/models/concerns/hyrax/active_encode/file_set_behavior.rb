@@ -19,7 +19,7 @@ module Hyrax
       end
 
       def derivatives
-        files.select { |f| f.metadata_node.type.include? ::RDF::URI('http://pcdm.org/use#ServiceFile') }
+        filter_files_by_type(::RDF::URI('http://pcdm.org/use#ServiceFile'))
       end
 
       def derivatives_metadata
