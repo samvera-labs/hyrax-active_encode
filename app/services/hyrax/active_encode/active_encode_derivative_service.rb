@@ -33,6 +33,11 @@ module Hyrax
 
       private
 
+        def derivative_directory
+          pair_path = file_set.id.split('').each_slice(2).map(&:join).join('/')
+          Pathname.new(Hyrax.config.derivatives_path).join(pair_path).to_s
+        end
+
         def supported_mime_types
           file_set.class.audio_mime_types + file_set.class.video_mime_types
         end
