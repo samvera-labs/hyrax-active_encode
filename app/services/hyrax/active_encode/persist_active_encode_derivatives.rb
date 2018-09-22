@@ -4,7 +4,6 @@ module Hyrax
   module ActiveEncode
     class PersistActiveEncodeDerivatives
       def self.call(output, directives)
-        # byebug
         if directives[:derivative_directory].present?
           new_url = move_derivative(output, directives)
           output.url = new_url
@@ -13,13 +12,12 @@ module Hyrax
       end
 
       def self.create_pcdm_file(output, directives)
-        # byebug
         file_set = ActiveFedora::Base.find(directives[:file_set_id])
-        # FIXME: next lines failing for bizarre reasons
         pcdm_file = file_set.build_derivative
         pcdm_file.label = output.label
         pcdm_file.external_file_uri = output.url
-        pcdm_file.save!
+        pcdm_file.content = ''
+        file_set.save!
       end
       private_class_method :create_pcdm_file
 
