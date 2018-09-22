@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Hyrax::ActiveEncode::OptionService do
+describe Hyrax::ActiveEncode::DefaultOptionService do
   before(:all) do
     class ActiveEncodeFileSet < ::FileSet
       include Hyrax::ActiveEncode::FileSetBehavior

@@ -3,7 +3,7 @@ require 'active_encode'
 
 module Hyrax
   module ActiveEncode
-    class OptionService
+    class DefaultOptionService
       # Returns default audio/video output options for ActiveEncode.
       # @param fileset the data to be persisted
       # @return an array of hashes of output options for audio/video
