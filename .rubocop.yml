@@ -19,3 +19,8 @@ Metrics/BlockLength:
     - 'spec/models/file_set_spec.rb'
     - 'spec/services/active_encode_derivative_service_spec.rb'
     - 'spec/services/derivative_service_spec.rb'
+    - 'spec/services/option_service_spec.rb'
+
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/services/option_service_spec.rb'

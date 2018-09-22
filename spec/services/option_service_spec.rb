@@ -15,7 +15,7 @@ describe Hyrax::ActiveEncode::OptionService do
 
   describe '#self.call' do
     let(:file_set) { ActiveEncodeFileSet.new }
-    subject { described_class.call(file_set) }
+    let(:options) { described_class.call(file_set) }
 
     context 'with audio file set' do
       before do
@@ -23,12 +23,17 @@ describe Hyrax::ActiveEncode::OptionService do
       end
 
       it 'returns a hash array containing audio format options' do
-        expect(subject).to be_an(Array)
-        expect(subject).not_to be_empty
-        subject.each do |hash|
-          expect(hash).to be_a(Hash)
-          expect(hash).to include(:label)
-          expect(hash).to include(:ffmpeg_opt)
+        expect(options).to be_an Array
+        expect(options).not_to be_empty
+        options.each do |hash|
+          expect(hash).to be_a Hash
+          expect(hash).to include(:outputs)
+          expect(hash[:outputs]).to be_an Array
+          hash[:outputs].each do |output|
+            expect(output).to be_a Hash
+            expect(output).to include(:label)
+            expect(output).to include(:ffmpeg_opt)
+          end
         end
       end
     end
@@ -39,12 +44,17 @@ describe Hyrax::ActiveEncode::OptionService do
       end
 
       it 'returns a hash array containing video format options' do
-        expect(subject).to be_an(Array)
-        expect(subject).not_to be_empty
-        subject.each do |hash|
+        expect(options).to be_an(Array)
+        expect(options).not_to be_empty
+        options.each do |hash|
           expect(hash).to be_a(Hash)
-          expect(hash).to include(:label)
-          expect(hash).to include(:ffmpeg_opt)
+          expect(hash).to include(:outputs)
+          expect(hash[:outputs]).to be_an Array
+          hash[:outputs].each do |output|
+            expect(output).to be_a Hash
+            expect(output).to include(:label)
+            expect(output).to include(:ffmpeg_opt)
+          end
         end
       end
     end
