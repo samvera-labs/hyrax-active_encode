@@ -76,26 +76,38 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
   end
 
   describe '#create_derivatives' do
-    let(:options_service_class) { CustomOptionService }
-    let(:options) { output_service_class.call(file_set) }
+    let(:options) { options_service_class.call(file_set) }
+    let(:outputs) { options.map { |o| o.merge(internal_options) } }
+    let(:derivative_directory) { service.send(:derivative_directory) }
 
     context 'with local streaming' do
+      let(:internal_options) { { file_set_id: file_set.id, derivative_directory: derivative_directory } }
+
       it 'calls the ActiveEncode runner with the original file, passing the encode class and the provided output options' do
-        byebug
-        allow(Hydra::Derivatives::ActiveEncodeDerivatives).to receive(:create).with("sample.mp4", encode_class: encode_class, outputs: [hash_including(file_set_id: file_set.id)])
+        allow(Hydra::Derivatives::ActiveEncodeDerivatives).to receive(:create).with("sample.mp4", encode_class: encode_class, outputs: outputs)
         service.create_derivatives("sample.mp4")
-        expect(Hydra::Derivatives::ActiveEncodeDerivatives).to have_received(:create).with("sample.mp4", encode_class: encode_class, outputs: [hash_including(file_set_id: file_set.id)])
+        expect(Hydra::Derivatives::ActiveEncodeDerivatives).to have_received(:create).with("sample.mp4", encode_class: encode_class, outputs: outputs)
+      end
+
+      context 'with custom options service class' do
+        let(:options_service_class) { CustomOptionService }
+
+        it 'calls the ActiveEncode runner with the original file, passing the encode class and the provided output options' do
+          allow(Hydra::Derivatives::ActiveEncodeDerivatives).to receive(:create).with("sample.mp4", encode_class: encode_class, outputs: outputs)
+          service.create_derivatives("sample.mp4")
+          expect(Hydra::Derivatives::ActiveEncodeDerivatives).to have_received(:create).with("sample.mp4", encode_class: encode_class, outputs: outputs)
+        end
       end
     end
 
     context 'with external streaming' do
       let(:service) { described_class.new(file_set, encode_class: encode_class, options_service_class: options_service_class, local_streaming: false) }
+      let(:internal_options) { { file_set_id: file_set.id } }
 
       it 'calls the ActiveEncode runner with the original file, passing the encode class and the provided output options' do
-        byebug
-        allow(Hydra::Derivatives::ActiveEncodeDerivatives).to receive(:create).with("sample.mp4", encode_class: encode_class, outputs: [hash_including(file_set_id: file_set.id)])
+        allow(Hydra::Derivatives::ActiveEncodeDerivatives).to receive(:create).with("sample.mp4", encode_class: encode_class, outputs: outputs)
         service.create_derivatives("sample.mp4")
-        expect(Hydra::Derivatives::ActiveEncodeDerivatives).to have_received(:create).with("sample.mp4", encode_class: encode_class, outputs: [hash_including(file_set_id: file_set.id)])
+        expect(Hydra::Derivatives::ActiveEncodeDerivatives).to have_received(:create).with("sample.mp4", encode_class: encode_class, outputs: outputs)
       end
     end
   end

@@ -14,7 +14,6 @@ module Hyrax
       end
 
       def create_derivatives(filename)
-        byebug
         options = options_service_class.call(@file_set)
         options.each do |option|
           option[:file_set_id] = file_set.id
