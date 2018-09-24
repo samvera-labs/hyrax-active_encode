@@ -49,7 +49,7 @@ require 'active_fedora/rake_support'
 
 desc "CI build"
 task ci: [:rubocop, "engine_cart:generate"] do
-  # ENV['environment'] = "test"
+  ENV['environment'] = "test"
   with_test_server do
     Rake::Task['spec'].invoke
   end
