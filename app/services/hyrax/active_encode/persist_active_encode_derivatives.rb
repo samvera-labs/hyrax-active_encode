@@ -3,6 +3,10 @@
 module Hyrax
   module ActiveEncode
     class PersistActiveEncodeDerivatives
+      # @param [ActiveEncode::Output] output the output from the active_encode adapter
+      # @param [Hash] directives directions which can be used to determine where to persist to.
+      # @option directives [String] derivative_directory if present the directory to copy the derivative
+      # @option directives [String] file_set_id the id of the file set to add the derivative
       def self.call(output, directives)
         if directives[:derivative_directory].present?
           new_url = move_derivative(output, directives)
