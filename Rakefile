@@ -51,6 +51,7 @@ desc "CI build"
 task ci: [:rubocop, "engine_cart:generate"] do
   ENV['environment'] = "test"
   with_test_server do
+    `bundle install`
     Rake::Task['spec'].invoke
   end
 end
