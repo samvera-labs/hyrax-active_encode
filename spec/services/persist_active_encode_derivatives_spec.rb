@@ -62,7 +62,11 @@ describe PersistActiveEncodeDerivatives do
         let(:host) { 'http://example.com/' }
         let(:url) { host + filename }
 
-        it 'moves the output file to the specified derivative_directory' do
+        before do
+          stub_request(:get, url).to_return(:status => 200, :body => "", :headers => {})
+        end
+
+        it 'copies the output file to the specified derivative_directory' do
           # expect(IO).to have_received(:copy_stream).with('/outputs/test_high.mp4', '/derivatives/test_high.mp4')
           expect(File.exist?(file_path)).to eq true
         end
