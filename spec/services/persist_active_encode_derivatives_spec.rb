@@ -2,7 +2,7 @@
 require 'rails_helper'
 require 'tempfile'
 
-describe PersistActiveEncodeDerivatives do
+describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
   before(:all) do
     class ActiveEncodeIndexer < ActiveFedora::IndexingService
       include Hyrax::ActiveEncode::IndexesFileMetadata
@@ -19,9 +19,9 @@ describe PersistActiveEncodeDerivatives do
     Object.send(:remove_const, :ActiveEncodeFileSet)
   end
 
-  let(:url) { nil }
+  let(:url) { 'testurl' }
   let(:label) { 'high' }
-  let (:directory) { nil }
+  let(:directory) { nil }
 
   let(:file_set) { ActiveEncodeFileSet.create }
   let(:derivative) do
@@ -33,14 +33,14 @@ describe PersistActiveEncodeDerivatives do
   end
 
   let(:directives) { { derivative_directory: directory, file_set_id: file_set.id } }
-  let(:output) { { url: url, label: label } }
+  let(:output) { ActiveEncode::Output.new.tap { |o| o.url = url; o.label = label } }
   let(:service) { described_class.new }
 
   describe '#call' do
     subject { service.call(output, directives) }
 
     context 'with a specified derivative_directory' do
-      let (:directory) { '/derivatives/' }
+      let(:directory) { '/derivatives/' }
       let(:filename) { 'test_high.mp4' }
       let(:file_path) { directory + filename }
 
@@ -51,6 +51,7 @@ describe PersistActiveEncodeDerivatives do
         it 'moves the output file to the specified derivative_directory' do
           # expect(FileUtils).to have_received(:mv).with('/outputs/test_high.mp4', '/derivatives/test_high.mp4')
           expect(File.exist?(file_path)).to eq true
+          expect(file.exist?).to eq false
         end
 
         it 'updates the output url to point to the specified derivative_directory' do
@@ -59,11 +60,11 @@ describe PersistActiveEncodeDerivatives do
       end
 
       context 'with an external output file' do
-        let(:host) { 'http://example.com/' }
+        let(:host) { 'http://example.com/outputs/' }
         let(:url) { host + filename }
 
         before do
-          stub_request(:get, url).to_return(:status => 200, :body => "", :headers => {})
+          stub_request(:get, url).to_return(status: 200, body: "", headers: {})
         end
 
         it 'copies the output file to the specified derivative_directory' do
@@ -75,8 +76,9 @@ describe PersistActiveEncodeDerivatives do
           expect(output.url).to eq 'file://' + file_path
         end
       end
+    end
 
-      context 'when derivative_directory is not specified' do
+    context 'when derivative_directory is not specified' do
       it 'the output url is not changed' do
         expect(output.url).to eq url
       end
@@ -89,5 +91,5 @@ describe PersistActiveEncodeDerivatives do
       expect(pcdm_file.external_file_uri).to eq url
       expect(pcdm_file.contect).to eq ''
     end
-
   end
+end
