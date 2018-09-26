@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   end
 
   s.add_dependency "hyrax", "~> 2.1"
+  s.add_dependency 'active-fedora', '=11.5.2'
 
   s.add_development_dependency 'bixby'
   s.add_development_dependency 'coffee-rails'

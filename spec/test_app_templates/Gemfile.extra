@@ -1,4 +1,4 @@
-gem 'blacklight'
 gem 'hyrax'
-gem 'active-fedora', '=11.5.2'
+gem 'solr_wrapper'
+gem 'fcrepo_wrapper'
 gem 'active_encode', github: 'samvera-labs/active_encode'
