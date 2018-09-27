@@ -3,9 +3,13 @@ require 'rails_helper'
 
 describe FileSet do
   before(:all) do
+    class ActiveEncodeIndexer < ActiveFedora::IndexingService
+      include Hyrax::ActiveEncode::IndexesFileMetadata
+    end
+
     class ActiveEncodeFileSet < ::FileSet
       include Hyrax::ActiveEncode::FileSetBehavior
-      self.indexer = Hyrax::ActiveEncode::ActiveEncodeIndexer
+      self.indexer = ActiveEncodeIndexer
     end
   end
 
