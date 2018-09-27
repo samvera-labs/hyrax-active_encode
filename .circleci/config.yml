@@ -37,8 +37,6 @@ jobs:
     - restore_cache:
         keys:
         - source-v1-{{ .Branch }}-{{ .Revision }}
-        - source-v1-{{ .Branch }}-
-        - source-v1-
 
     - checkout
 
@@ -55,13 +53,12 @@ jobs:
 
     - restore_cache:
         keys:
-        - v1-internal-test-app-{{ .Branch }}
-        - v1-internal-test-app-
+        - v1-internal-test-app-{{ .Branch }}-{{ checksum "hyrax-active_encode.gemspec" }}
 
     # Download and cache dependencies
     - restore_cache:
         keys:
-        - v1-dependencies-{{ .Branch }}-{{ checksum "./.internal_test_app/.generated_engine_cart" }}
+        - v1-dependencies-{{ .Branch }}-{{ checksum "hyrax-active_encode.gemspec" }}
         - v1-dependencies-{{ .Branch }}
         - v1-dependencies-
 
@@ -80,12 +77,12 @@ jobs:
     - run:
         name: Generate test app, ensure top-level Gemfile.lock is valid
         command: |
-          bundle exec rake engine_cart:generate
+          [ -e ./.internal_test_app ] || bundle exec rake engine_cart:generate
 
     - save_cache:
         paths:
         - ./.internal_test_app
-        key: v1-internal-test-app-{{ .Branch }}-{{ checksum "./.internal_test_app/.generated_engine_cart" }}
+        key: v1-internal-test-app-{{ .Branch }}-{{ checksum "hyrax-active_encode.gemspec" }}
 
     - run:
         name: Load config into SolrCloud
@@ -108,7 +105,7 @@ jobs:
     - save_cache:
         paths:
         - ./vendor/bundle
-        key: v1-dependencies-{{ .Branch }}-{{ checksum "./.internal_test_app/.generated_engine_cart" }}
+        key: v1-dependencies-{{ .Branch }}-{{ checksum "hyrax-active_encode.gemspec" }}
 
     # collect reports
     - store_test_results:
