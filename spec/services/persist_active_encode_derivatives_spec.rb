@@ -60,7 +60,7 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
         end
 
         it 'updates the output url to point to the specified derivative_directory' do
-          expect(output.url).to eq 'file://' + file_path
+          expect(output.url).to eq Hyrax::Engine.routes.url_helpers.download_url(file_set, file: File.basename(url))
         end
       end
 
@@ -78,7 +78,7 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
         end
 
         it 'updates the output url to point to the specified derivative_directory' do
-          expect(output.url).to eq 'file://' + file_path
+          expect(output.url).to eq Hyrax::Engine.routes.url_helpers.download_url(file_set, file: File.basename(url))
         end
       end
     end
@@ -89,7 +89,7 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
       end
     end
 
-    let(:pcdm_file) { expect(file_set.reload.derivatives)[0] }
+    let(:pcdm_file) { file_set.reload.derivatives.first }
 
     it "creates pcdm file" do
       expect(pcdm_file.label).to eq label
