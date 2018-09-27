@@ -60,7 +60,7 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
         end
 
         it 'updates the output url to point to the specified derivative_directory' do
-          expect(output.url).to eq Hyrax::Engine.routes.url_helpers.download_url(file_set, file: File.basename(url))
+          expect(output.url).to eq Hyrax::Engine.routes.url_helpers.download_path(file_set, file: File.basename(url))
         end
       end
 
@@ -78,7 +78,7 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
         end
 
         it 'updates the output url to point to the specified derivative_directory' do
-          expect(output.url).to eq Hyrax::Engine.routes.url_helpers.download_url(file_set, file: File.basename(url))
+          expect(output.url).to eq Hyrax::Engine.routes.url_helpers.download_path(file_set, file: File.basename(url))
         end
       end
     end

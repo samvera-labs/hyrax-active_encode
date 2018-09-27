@@ -11,7 +11,7 @@ module Hyrax
         file_set = ActiveFedora::Base.find(directives[:file_set_id])
         if directives[:derivative_directory].present?
           new_url = move_derivative(output, directives)
-          output.url = Hyrax::Engine.routes.url_helpers.download_url(file_set, file: File.basename(new_url))
+          output.url = Hyrax::Engine.routes.url_helpers.download_path(file_set, file: File.basename(new_url))
         end
         create_pcdm_file(output, file_set, directives)
       end
