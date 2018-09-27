@@ -33,7 +33,12 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
   end
 
   let(:directives) { { derivative_directory: directory, file_set_id: file_set.id } }
-  let(:output) { ActiveEncode::Output.new.tap { |o| o.url = url; o.label = label } }
+  let(:output) do
+    ActiveEncode::Output.new.tap do |o|
+      o.url = url
+      o.label = label
+    end
+  end
   let(:service) { described_class.new }
 
   describe '#call' do

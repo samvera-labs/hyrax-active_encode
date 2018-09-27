@@ -16,7 +16,7 @@ module Hyrax
         create_pcdm_file(output, file_set, directives)
       end
 
-      def self.create_pcdm_file(output, file_set, directives)
+      def self.create_pcdm_file(output, file_set, _directives)
         pcdm_file = file_set.build_derivative
         pcdm_file.label = output.label
         pcdm_file.external_file_uri = output.url
