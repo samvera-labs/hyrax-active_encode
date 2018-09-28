@@ -78,10 +78,10 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
   describe '#create_derivatives' do
     let(:options) { options_service_class.call(file_set) }
     let(:outputs) { options.map { |o| o.merge(internal_options) } }
-    let(:derivative_directory) { service.send(:derivative_directory) }
+    let(:derivative_url) { service.send(:derivative_url, 'high') }
 
     context 'with local streaming' do
-      let(:internal_options) { { file_set_id: file_set.id, derivative_directory: derivative_directory } }
+      let(:internal_options) { { file_set_id: file_set.id, local_streaming: true } }
 
       it 'calls the ActiveEncode runner with the original file, passing the encode class and the provided output options' do
         allow(Hydra::Derivatives::ActiveEncodeDerivatives).to receive(:create).with("sample.mp4", encode_class: encode_class, outputs: outputs)
