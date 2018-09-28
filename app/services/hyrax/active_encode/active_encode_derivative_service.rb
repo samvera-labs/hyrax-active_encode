@@ -17,7 +17,7 @@ module Hyrax
         options = options_service_class.call(@file_set)
         options.each do |option|
           option[:file_set_id] = file_set.id
-          option[:derivative_directory] = derivative_directory if local_streaming?
+          option[:local_streaming] = true if local_streaming?
         end
         Hydra::Derivatives::ActiveEncodeDerivatives.create(filename, outputs: options, encode_class: @encode_class)
       end
@@ -40,11 +40,6 @@ module Hyrax
       end
 
       private
-
-        def derivative_directory
-          pair_path = file_set.id.split('').each_slice(2).map(&:join).join('/')
-          Pathname.new(Hyrax.config.derivatives_path).join(pair_path).to_s
-        end
 
         def supported_mime_types
           file_set.class.audio_mime_types + file_set.class.video_mime_types
