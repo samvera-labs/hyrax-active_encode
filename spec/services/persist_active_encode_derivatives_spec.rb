@@ -40,9 +40,8 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
     end
   end
 
-
   describe '#call' do
-    subject { Hyrax::ActiveEncode::PersistActiveEncodeDerivatives.call(output, directives) }
+    subject(:call_persist) { described_class.call(output, directives) }
 
     context 'for local streaming' do
       let(:filename) { 'sample.mp4' }
@@ -50,23 +49,23 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
       let(:downpath) { Hyrax::Engine.routes.url_helpers.download_path(file_set, file: filename) }
 
       context 'with a local output derivative' do
-        let(:file) { Tempfile.new() }
+        let(:file) { Tempfile.new }
         let(:filename) { File.basename(file) }
         let(:url) { 'file://' + file.path }
 
         it 'moves the derivative to the designated reference directory' do
-          subject
+          call_persist
           expect(File.exist?(refpath)).to eq true
           # expect(File.exist?(file)).to eq false
         end
 
         it 'updates the output url to point to the designated download directory' do
-          subject
+          call_persist
           expect(output.url).to eq downpath
         end
 
         it "creates pcdm file" do
-          subject
+          call_persist
           expect(pcdm_file.label).to eq Array[label]
           expect(pcdm_file.external_file_uri).to eq Array[downpath]
           expect(pcdm_file.content).to eq ''
@@ -82,35 +81,34 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
         end
 
         it 'copies the derivative to the designated reference directory' do
-          subject
+          call_persist
           expect(File.exist?(refpath)).to eq true
         end
 
         it 'updates the output url to point to the designated download directory' do
-          subject
+          call_persist
           expect(output.url).to eq downpath
         end
 
         it "creates pcdm file" do
-          subject
+          call_persist
           expect(pcdm_file.label).to eq Array[label]
           expect(pcdm_file.external_file_uri).to eq Array[downpath]
           expect(pcdm_file.content).to eq ''
         end
       end
-
     end
 
     context 'for remote streaming' do
       let(:local_streaming) { false }
 
       it 'the output url is not changed' do
-        subject
+        call_persist
         expect(output.url).to eq url
       end
 
       it "creates pcdm file" do
-        subject
+        call_persist
         expect(pcdm_file.label).to eq Array[label]
         expect(pcdm_file.external_file_uri).to eq Array[url]
         expect(pcdm_file.content).to eq ''
