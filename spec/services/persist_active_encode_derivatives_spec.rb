@@ -21,8 +21,6 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
 
   let(:url) { 'testurl' }
   let(:label) { 'high' }
-  let(:directory) { nil }
-
   let(:file_set) { ActiveEncodeFileSet.create }
   let(:derivative) do
     file_set.build_derivative.tap do |d|
@@ -32,66 +30,65 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
     end
   end
 
-  let(:directives) { { derivative_directory: directory, file_set_id: file_set.id } }
+  let(:local_streaming) { true }
+  let(:directives) { { local_streaming: local_streaming, file_set_id: file_set.id } }
   let(:output) do
     ActiveEncode::Output.new.tap do |o|
       o.url = url
       o.label = label
     end
   end
-  let(:service) { described_class.new }
+
 
   describe '#call' do
-    subject { service.call(output, directives) }
+    subject { Hyrax::ActiveEncode::PersistActiveEncodeDerivatives.call(output, directives) }
 
-    context 'with a specified derivative_directory' do
-      let(:directory) { '/derivatives/' }
-      let(:filename) { 'test_high.mp4' }
-      let(:file_path) { directory + filename }
+    context 'for local streaming' do
+      let(:refpath) { Hyrax::DerivativePath.derivative_path_for_reference(file_set.id, filename) }
+      let(:downpath) { Hyrax::Engine.routes.url_helpers.download_path(file_set, file: filename) }
 
-      context 'with a local output file' do
-        let(:file) { Tempfile.new(filename) }
+      context 'with a local output derivative' do
+        let(:file) { Tempfile.new() }
+        let(:filename) { File.basename(file) }
         let(:url) { 'file://' + file.path }
 
-        it 'moves the output file to the specified derivative_directory' do
-          # expect(FileUtils).to have_received(:mv).with('/outputs/test_high.mp4', '/derivatives/test_high.mp4')
-          expect(File.exist?(file_path)).to eq true
-          expect(file.exist?).to eq false
-        end
-
-        it 'updates the output url to point to the specified derivative_directory' do
-          expect(output.url).to eq Hyrax::Engine.routes.url_helpers.download_path(file_set, file: File.basename(url))
+        it 'moves the derivative to the designated reference directory' do
+          subject
+          expect(File.exist?(refpath)).to eq true
+          expect(File.exist?(file)).to eq false
         end
       end
 
-      context 'with an external output file' do
+      context 'with an external output derivative' do
         let(:host) { 'http://example.com/outputs/' }
+        let(:filename) { 'sample.mp4' }
         let(:url) { host + filename }
 
         before do
           stub_request(:get, url).to_return(status: 200, body: "", headers: {})
         end
 
-        it 'copies the output file to the specified derivative_directory' do
-          # expect(IO).to have_received(:copy_stream).with('/outputs/test_high.mp4', '/derivatives/test_high.mp4')
-          expect(File.exist?(file_path)).to eq true
+        it 'copies the derivative to the designated reference directory' do
+          expect(File.exist?(refpath)).to eq true
         end
+      end
 
-        it 'updates the output url to point to the specified derivative_directory' do
-          expect(output.url).to eq Hyrax::Engine.routes.url_helpers.download_path(file_set, file: File.basename(url))
-        end
+      it 'updates the output url to point to the designated download directory' do
+        expect(output.url).to eq downpath
       end
     end
 
-    context 'when derivative_directory is not specified' do
+    context 'for remote streaming' do
+      let(:local_streaming) { false }
+
       it 'the output url is not changed' do
         expect(output.url).to eq url
       end
     end
 
     let(:pcdm_file) { file_set.reload.derivatives.first }
-
     it "creates pcdm file" do
+      # subject
       expect(pcdm_file.label).to eq label
       expect(pcdm_file.external_file_uri).to eq url
       expect(pcdm_file.contect).to eq ''
