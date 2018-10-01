@@ -32,7 +32,7 @@ describe Hyrax::ActiveEncode::DefaultOptionService do
           hash[:outputs].each do |output|
             expect(output).to be_a Hash
             expect(output).to include(:label)
-            expect(output).to include(:ffmpeg_opt)
+            expect(output).to include(:extension)
           end
         end
       end
@@ -53,6 +53,7 @@ describe Hyrax::ActiveEncode::DefaultOptionService do
           hash[:outputs].each do |output|
             expect(output).to be_a Hash
             expect(output).to include(:label)
+            expect(output).to include(:extension)
             expect(output).to include(:ffmpeg_opt)
           end
         end
