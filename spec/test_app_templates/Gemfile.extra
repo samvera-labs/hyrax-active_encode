@@ -1,3 +1,2 @@
 gem 'hyrax'
 gem 'fcrepo_wrapper'
-gem 'active_encode', github: 'samvera-labs/active_encode'
