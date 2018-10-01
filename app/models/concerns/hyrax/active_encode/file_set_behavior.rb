@@ -9,17 +9,20 @@ module Hyrax
       included do
         # Is this too late?  Has the ActiveFedora::File metadata schema been frozen already?
         ActiveFedora::WithMetadata::DefaultMetadataClassFactory.file_metadata_schemas += [ActiveFedora::WithMetadata::ExternalFileUriSchema]
+
+        # The following doesn't work because through isn't allowed on directly_contains even though it is on directly_contains_one
+        # directly_contains :derivatives, through: :files, type: ::RDF::URI('http://pcdm.org/use#ServiceFile'), class_name: 'Hydra::PCDM::File'
       end
 
       def build_derivative
-        derivative = Hydra::PCDM::File.new
-        derivative.metadata_node.type << ::RDF::URI('http://pcdm.org/use#ServiceFile')
-        files << derivative
-        derivative
+        # This only works when the file_set has already been saved
+        files.build.tap do |file|
+          file.metadata_node.type << ::RDF::URI('http://pcdm.org/use#ServiceFile')
+        end
       end
 
       def derivatives
-        files.select { |f| f.metadata_node.type.include? ::RDF::URI('http://pcdm.org/use#ServiceFile') }
+        filter_files_by_type(::RDF::URI('http://pcdm.org/use#ServiceFile'))
       end
 
       def derivatives_metadata

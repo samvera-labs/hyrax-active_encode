@@ -18,10 +18,15 @@ Gem::Specification.new do |s|
     f.match(%r{^(test|spec|features)/})
   end
 
+  s.add_dependency "active_encode", "~> 0.4"
   s.add_dependency "hyrax", "~> 2.1"
 
   s.add_development_dependency 'bixby'
   s.add_development_dependency 'coffee-rails'
+  s.add_development_dependency 'database_cleaner'
   s.add_development_dependency 'engine_cart', '~> 2.0'
+  s.add_development_dependency 'fcrepo_wrapper'
   s.add_development_dependency "rspec-rails", "~> 3.8"
+  s.add_development_dependency 'solr_wrapper'
+  s.add_development_dependency 'webmock'
 end

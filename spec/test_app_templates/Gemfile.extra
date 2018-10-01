@@ -1,2 +1,2 @@
-gem 'blacklight'
 gem 'hyrax'
+gem 'fcrepo_wrapper'

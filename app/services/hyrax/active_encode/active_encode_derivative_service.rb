@@ -1,11 +1,25 @@
 # frozen_string_literal: true
+require 'active_encode'
+
 module Hyrax
   module ActiveEncode
     class ActiveEncodeDerivativeService < Hyrax::DerivativeService
+      attr_accessor :encode_class, :options_service_class
+
+      def initialize(file_set, encode_class: ::ActiveEncode::Base, options_service_class: DefaultOptionService, local_streaming: true)
+        super(file_set)
+        @encode_class = encode_class
+        @options_service_class = options_service_class
+        @local_streaming = local_streaming
+      end
+
       def create_derivatives(filename)
-        # TODO: Pass encode class from configuration and other output configuration (preset?)
-        job_settings = []
-        Hydra::Derivatives::ActiveEncodeDerivatives.create(filename, outputs: [job_settings])
+        options = options_service_class.call(@file_set)
+        options.each do |option|
+          option[:file_set_id] = file_set.id
+          option[:local_streaming] = true if local_streaming?
+        end
+        Hydra::Derivatives::ActiveEncodeDerivatives.create(filename, outputs: options, encode_class: @encode_class)
       end
 
       # What should this return?
@@ -20,6 +34,10 @@ module Hyrax
 
       # TODO: Implement this?
       def cleanup_derivatives; end
+
+      def local_streaming?
+        @local_streaming == true
+      end
 
       private
 
