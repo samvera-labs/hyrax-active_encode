@@ -22,6 +22,7 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
   let(:url) { 'testurl' }
   let(:label) { 'high' }
   let(:file_set) { ActiveEncodeFileSet.create }
+  let(:pcdm_file) { file_set.reload.derivatives.first }
   let(:derivative) do
     file_set.build_derivative.tap do |d|
       d.label = label
@@ -58,6 +59,18 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
           expect(File.exist?(refpath)).to eq true
           # expect(File.exist?(file)).to eq false
         end
+
+        it 'updates the output url to point to the designated download directory' do
+          subject
+          expect(output.url).to eq downpath
+        end
+
+        it "creates pcdm file" do
+          subject
+          expect(pcdm_file.label).to eq Array[label]
+          expect(pcdm_file.external_file_uri).to eq Array[downpath]
+          expect(pcdm_file.content).to eq ''
+        end
       end
 
       context 'with an external output derivative' do
@@ -72,12 +85,20 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
           subject
           expect(File.exist?(refpath)).to eq true
         end
+
+        it 'updates the output url to point to the designated download directory' do
+          subject
+          expect(output.url).to eq downpath
+        end
+
+        it "creates pcdm file" do
+          subject
+          expect(pcdm_file.label).to eq Array[label]
+          expect(pcdm_file.external_file_uri).to eq Array[downpath]
+          expect(pcdm_file.content).to eq ''
+        end
       end
 
-      it 'updates the output url to point to the designated download directory' do
-        subject
-        expect(output.url).to eq downpath
-      end
     end
 
     context 'for remote streaming' do
@@ -87,14 +108,13 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
         subject
         expect(output.url).to eq url
       end
-    end
 
-    let(:pcdm_file) { file_set.reload.derivatives.first }
-    it "creates pcdm file" do
-      subject
-      expect(pcdm_file.label).to eq label
-      expect(pcdm_file.external_file_uri).to eq url
-      expect(pcdm_file.contect).to eq ''
+      it "creates pcdm file" do
+        subject
+        expect(pcdm_file.label).to eq Array[label]
+        expect(pcdm_file.external_file_uri).to eq Array[url]
+        expect(pcdm_file.content).to eq ''
+      end
     end
   end
 end
