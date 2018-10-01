@@ -34,7 +34,7 @@ module Hyrax
           FileUtils.mv output_uri.path, move_path
         else
           # Read from remote url and persist to derivative_path
-          open(output_uri) { |io| IO.copy_stream(io, File.open(file_path, 'wb')) }
+          open(output_uri.to_s) { |io| IO.copy_stream(io, File.open(move_path, 'wb')) }
         end
         move_path
       end
