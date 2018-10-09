@@ -4,9 +4,35 @@ require 'active_encode'
 module Hyrax
   module ActiveEncode
     class ActiveEncodeDerivativeService < Hyrax::DerivativeService
+      class << self
+        def default_encode_class=(klass)
+          @@default_encode_class = klass
+        end
+
+        def default_encode_class
+          @@default_encode_class ||= ::ActiveEncode::Base
+        end
+
+        def default_options_service_class=(klass)
+          @@default_options_service_class = klass
+        end
+
+        def default_options_service_class
+          @@default_options_service_class ||= Hyrax::ActiveEncode::DefaultOptionService
+        end
+
+        def default_local_streaming=(local_streaming)
+          @@default_local_streaming = local_streaming
+        end
+
+        def default_local_streaming
+          @@default_local_streaming ||= true
+        end
+      end
+
       attr_accessor :encode_class, :options_service_class
 
-      def initialize(file_set, encode_class: ::ActiveEncode::Base, options_service_class: DefaultOptionService, local_streaming: true)
+      def initialize(file_set, encode_class: self.class.default_encode_class, options_service_class: self.class.default_options_service_class, local_streaming: self.class.default_local_streaming)
         super(file_set)
         @encode_class = encode_class
         @options_service_class = options_service_class
