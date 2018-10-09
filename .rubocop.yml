@@ -25,3 +25,7 @@ Metrics/BlockLength:
 RSpec/ExampleLength:
   Exclude:
     - 'spec/services/default_option_service_spec.rb'
+
+Style/ClassVars:
+  Exclude:
+    - 'app/services/hyrax/active_encode/active_encode_derivative_service.rb'
