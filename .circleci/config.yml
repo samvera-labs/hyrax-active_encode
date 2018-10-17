@@ -53,7 +53,7 @@ jobs:
 
     - restore_cache:
         keys:
-        - v1-internal-test-app-{{ .Branch }}-{{ checksum "hyrax-active_encode.gemspec" }}
+        - v1-internal-test-app-{{ checksum "hyrax-active_encode.gemspec" }}
 
     # Download and cache dependencies
     - restore_cache:
@@ -82,7 +82,13 @@ jobs:
     - save_cache:
         paths:
         - ./.internal_test_app
-        key: v1-internal-test-app-{{ .Branch }}-{{ checksum "hyrax-active_encode.gemspec" }}
+        key: v1-internal-test-app-{{ checksum "hyrax-active_encode.gemspec" }}
+
+    - run:
+        name: Run the plugin generator
+        command: |
+          cd .internal_test_app
+          bundle exec rails g hyrax:active_encode:install
 
     - run:
         name: Load config into SolrCloud
