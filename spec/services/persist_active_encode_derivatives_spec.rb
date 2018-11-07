@@ -46,7 +46,6 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
     context 'for local streaming' do
       let(:filename) { 'sample.mp4' }
       let(:refpath) { Hyrax::DerivativePath.derivative_path_for_reference(file_set.id, filename) }
-      let(:downpath) { Hyrax::Engine.routes.url_helpers.download_path(file_set, file: filename) }
 
       context 'with a local output derivative' do
         let(:file) { Tempfile.new }
@@ -61,13 +60,13 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
 
         it 'updates the output url to point to the designated download directory' do
           call_persist
-          expect(output.url).to eq downpath
+          expect(output.url).to eq refpath
         end
 
         it "creates pcdm file" do
           call_persist
           expect(pcdm_file.label).to eq Array[label]
-          expect(pcdm_file.file_location_uri).to eq Array[downpath]
+          expect(pcdm_file.file_location_uri).to eq Array[refpath]
           expect(pcdm_file.content).to eq ''
         end
       end
@@ -87,13 +86,13 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
 
         it 'updates the output url to point to the designated download directory' do
           call_persist
-          expect(output.url).to eq downpath
+          expect(output.url).to eq refpath
         end
 
         it "creates pcdm file" do
           call_persist
           expect(pcdm_file.label).to eq Array[label]
-          expect(pcdm_file.file_location_uri).to eq Array[downpath]
+          expect(pcdm_file.file_location_uri).to eq Array[refpath]
           expect(pcdm_file.content).to eq ''
         end
       end

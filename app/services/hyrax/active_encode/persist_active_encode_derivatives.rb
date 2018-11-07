@@ -9,11 +9,7 @@ module Hyrax
       # @option directives [String] file_set_id the id of the file set to add the derivative
       def self.call(output, directives)
         file_set = ActiveFedora::Base.find(directives[:file_set_id])
-        if directives[:local_streaming]
-          old_url = output.url
-          move_derivative(output, file_set)
-          output.url = Hyrax::Engine.routes.url_helpers.download_path(file_set, file: File.basename(old_url))
-        end
+        output.url = move_derivative(output, file_set) if directives[:local_streaming]
         create_pcdm_file(output, file_set)
       end
 
