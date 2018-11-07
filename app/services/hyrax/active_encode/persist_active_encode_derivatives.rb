@@ -20,7 +20,7 @@ module Hyrax
       def self.create_pcdm_file(output, file_set)
         pcdm_file = file_set.build_derivative
         pcdm_file.label = output.label
-        pcdm_file.external_file_uri = output.url
+        pcdm_file.file_location_uri = output.url
         pcdm_file.content = ''
         file_set.save!
       end

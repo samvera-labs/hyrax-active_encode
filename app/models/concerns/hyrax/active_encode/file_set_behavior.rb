@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require 'active_fedora/with_metadata/external_file_uri_schema'
+require 'active_fedora/with_metadata/file_location_uri_schema'
 
 module Hyrax
   module ActiveEncode
@@ -26,7 +26,7 @@ module Hyrax
       end
 
       def derivatives_metadata
-        derivatives.collect { |f| { id: f.id, label: f.label.first, external_file_uri: f.external_file_uri.first } }
+        derivatives.collect { |f| { id: f.id, label: f.label.first, file_location_uri: f.file_location_uri.first } }
       end
     end
   end

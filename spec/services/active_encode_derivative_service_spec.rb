@@ -121,7 +121,7 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
     let(:derivative) do
       file_set.build_derivative.tap do |d|
         d.label = 'high'
-        d.external_file_uri = external_uri
+        d.file_location_uri = external_uri
       end
     end
 

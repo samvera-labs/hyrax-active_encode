@@ -26,7 +26,7 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
   let(:derivative) do
     file_set.build_derivative.tap do |d|
       d.label = label
-      d.external_file_uri = url
+      d.file_location_uri = url
       d.content = ''
     end
   end
@@ -67,7 +67,7 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
         it "creates pcdm file" do
           call_persist
           expect(pcdm_file.label).to eq Array[label]
-          expect(pcdm_file.external_file_uri).to eq Array[downpath]
+          expect(pcdm_file.file_location_uri).to eq Array[downpath]
           expect(pcdm_file.content).to eq ''
         end
       end
@@ -93,7 +93,7 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
         it "creates pcdm file" do
           call_persist
           expect(pcdm_file.label).to eq Array[label]
-          expect(pcdm_file.external_file_uri).to eq Array[downpath]
+          expect(pcdm_file.file_location_uri).to eq Array[downpath]
           expect(pcdm_file.content).to eq ''
         end
       end
@@ -110,7 +110,7 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
       it "creates pcdm file" do
         call_persist
         expect(pcdm_file.label).to eq Array[label]
-        expect(pcdm_file.external_file_uri).to eq Array[url]
+        expect(pcdm_file.file_location_uri).to eq Array[url]
         expect(pcdm_file.content).to eq ''
       end
     end
