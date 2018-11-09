@@ -51,7 +51,7 @@ module Hyrax
       # What should this return?
       def derivative_url(file_label)
         derivative = file_set.derivatives.find { |d| d.label.first == file_label }
-        derivative.nil? ? nil : derivative.external_file_uri.first
+        derivative.nil? ? nil : derivative.file_location_uri.first
       end
 
       def valid?

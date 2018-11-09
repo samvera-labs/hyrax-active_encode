@@ -22,7 +22,7 @@ describe FileSet do
   let(:derivative) do
     file_set.build_derivative.tap do |d|
       d.label = 'high'
-      d.external_file_uri = 'http://test.file'
+      d.file_location_uri = 'http://test.file'
       d.content = ''
     end
   end
@@ -60,7 +60,7 @@ describe FileSet do
   end
 
   describe '#derivatives_metadata' do
-    let(:derivatives_metadata) { [{ id: derivative.id, label: 'high', external_file_uri: 'http://test.file' }] }
+    let(:derivatives_metadata) { [{ id: derivative.id, label: 'high', file_location_uri: 'http://test.file' }] }
     let(:indexer) { file_set.class.indexer.new(file_set) }
 
     before do
