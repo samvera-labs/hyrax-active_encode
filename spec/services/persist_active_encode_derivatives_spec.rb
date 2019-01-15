@@ -113,5 +113,16 @@ describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
         expect(pcdm_file.content).to eq ''
       end
     end
+
+    context 'with global id' do
+      let(:local_streaming) { false }
+      let(:global_id) { "gid://ActiveEncode/ActiveEncode::Base/1" }
+      let(:directives) { { local_streaming: local_streaming, file_set_id: file_set.id, encode_global_id: global_id } }
+
+      it "persists it on the file set" do
+        call_persist
+        expect(file_set.reload.encode_global_id).to eq global_id
+      end
+    end
   end
 end

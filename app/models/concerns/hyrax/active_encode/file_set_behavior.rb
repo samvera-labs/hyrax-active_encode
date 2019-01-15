@@ -7,11 +7,11 @@ module Hyrax
       extend ActiveSupport::Concern
 
       included do
-        # Is this too late?  Has the ActiveFedora::File metadata schema been frozen already?
-        ActiveFedora::WithMetadata::DefaultMetadataClassFactory.file_metadata_schemas += [ActiveFedora::WithMetadata::ExternalFileUriSchema]
+        property :encode_global_id, predicate: ::RDF::URI.new('http://avalonmediasystem.org/rdf/vocab/transcoding#workflowId'), multiple: false do |index|
+          index.as :symbol
+        end
 
-        # The following doesn't work because through isn't allowed on directly_contains even though it is on directly_contains_one
-        # directly_contains :derivatives, through: :files, type: ::RDF::URI('http://pcdm.org/use#ServiceFile'), class_name: 'Hydra::PCDM::File'
+        ActiveFedora::WithMetadata::DefaultMetadataClassFactory.file_metadata_schemas += [ActiveFedora::WithMetadata::FileLocationUriSchema]
       end
 
       def build_derivative
