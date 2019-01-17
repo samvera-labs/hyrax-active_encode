@@ -12,13 +12,13 @@ gem 'hyrax-active_encode'
 And then execute:
 
     $ bundle
-    
+
 ## Usage
 
 To enable derivative generation through `active_encode` run the install generator which will modify the generated `FileSet` model:
 
     $ rails g hyrax:active_encode:install
-    
+
 ## Configuration
 
 By default, hyrax-active_encode will use ActiveEncode's FFmpeg adapter and default ffmpeg options which will generate derivatives matching the defaults in Hyrax.
@@ -27,3 +27,4 @@ By default, hyrax-active_encode will use ActiveEncode's FFmpeg adapter and defau
 
 `Hyrax::ActiveEncode::ActiveEncodeDerivativeService` can also be passed the ActiveEncode encode class to be used.  By default this will be `ActiveEncode::Base`.
 
+`Hyrax::ActiveEncode::WatchedEncode` is an optional `ActiveEncode::Base` subclass that includes `ActiveEncode::Polling` and `ActiveEncode::Persistence`.  This optional encode class allows for tracking the encode process by saving the data from the encoding service in the `ActiveEncode::EncodeRecord` database table and saving the encode's global id on its associated file set.

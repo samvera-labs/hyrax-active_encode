@@ -7,11 +7,19 @@ module Hyrax
       source_root "../templates"
 
       def enhance_file_set
-        insert_into_file 'app/models/file_set.rb', after: 'include ::Hyrax::FileSetBehavior' do
-          "\n" \
-          "  include Hyrax::ActiveEncode::FileSetBehavior\n" \
-          "  self.indexer = Hyrax::ActiveEncode::ActiveEncodeIndexer"
+        # This module include has to come before Hyrax::FileSetBehavior since it finalizes properties
+        insert_into_file 'app/models/file_set.rb', before: 'include ::Hyrax::FileSetBehavior' do
+          "include Hyrax::ActiveEncode::FileSetBehavior\n  "
         end
+        # The indexer has to be set after Hyrax::FileSetBehavior in order to have effect
+        insert_into_file 'app/models/file_set.rb', after: 'include ::Hyrax::FileSetBehavior' do
+          "\n  self.indexer = Hyrax::ActiveEncode::ActiveEncodeIndexer"
+        end
+      end
+
+      def install_active_encode
+        rake 'active_encode:install:migrations'
+        rake 'db:migrate'
       end
     end
   end

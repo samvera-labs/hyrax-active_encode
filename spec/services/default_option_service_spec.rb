@@ -3,18 +3,8 @@
 require 'rails_helper'
 
 describe Hyrax::ActiveEncode::DefaultOptionService do
-  before(:all) do
-    class ActiveEncodeFileSet < ::FileSet
-      include Hyrax::ActiveEncode::FileSetBehavior
-    end
-  end
-
-  after(:all) do
-    Object.send(:remove_const, :ActiveEncodeFileSet)
-  end
-
   describe '#self.call' do
-    let(:file_set) { ActiveEncodeFileSet.new }
+    let(:file_set) { FileSet.new }
     let(:options) { described_class.call(file_set) }
 
     context 'with audio file set' do
