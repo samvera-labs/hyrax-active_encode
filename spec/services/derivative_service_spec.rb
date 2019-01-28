@@ -13,17 +13,17 @@ describe Hyrax::DerivativeService do
 
   describe '#for' do
     before(:all) do
-      class ActiveEncodeFileSet < ::FileSet
-        include Hyrax::ActiveEncode::FileSetBehavior
+      class DefaultFileSet < ActiveFedora::Base
+        include ::Hyrax::FileSetBehavior
       end
     end
 
     after(:all) do
-      Object.send(:remove_const, :ActiveEncodeFileSet)
+      Object.send(:remove_const, :DefaultFileSet)
     end
 
-    let(:valid_file_set) { ActiveEncodeFileSet.new }
-    let(:invalid_file_set) { ::FileSet.new }
+    let(:valid_file_set) { FileSet.new }
+    let(:invalid_file_set) { DefaultFileSet.new }
 
     before do
       allow(valid_file_set).to receive(:mime_type).and_return("video/mp4")

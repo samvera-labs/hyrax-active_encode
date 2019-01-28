@@ -3,25 +3,9 @@ require 'rails_helper'
 require 'tempfile'
 
 describe Hyrax::ActiveEncode::PersistActiveEncodeDerivatives do
-  before(:all) do
-    class ActiveEncodeIndexer < ActiveFedora::IndexingService
-      include Hyrax::ActiveEncode::IndexesFileMetadata
-    end
-
-    class ActiveEncodeFileSet < ::FileSet
-      include Hyrax::ActiveEncode::FileSetBehavior
-      self.indexer = ActiveEncodeIndexer
-    end
-  end
-
-  after(:all) do
-    Object.send(:remove_const, :ActiveEncodeIndexer)
-    Object.send(:remove_const, :ActiveEncodeFileSet)
-  end
-
   let(:url) { 'testurl' }
   let(:label) { 'high' }
-  let(:file_set) { ActiveEncodeFileSet.create }
+  let(:file_set) { FileSet.create }
   let(:pcdm_file) { file_set.reload.derivatives.first }
   let(:derivative) do
     file_set.build_derivative.tap do |d|

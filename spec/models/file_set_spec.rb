@@ -2,23 +2,7 @@
 require 'rails_helper'
 
 describe FileSet do
-  before(:all) do
-    class ActiveEncodeIndexer < ActiveFedora::IndexingService
-      include Hyrax::ActiveEncode::IndexesFileMetadata
-    end
-
-    class ActiveEncodeFileSet < ::FileSet
-      include Hyrax::ActiveEncode::FileSetBehavior
-      self.indexer = ActiveEncodeIndexer
-    end
-  end
-
-  after(:all) do
-    Object.send(:remove_const, :ActiveEncodeIndexer)
-    Object.send(:remove_const, :ActiveEncodeFileSet)
-  end
-
-  let(:file_set) { ActiveEncodeFileSet.create }
+  let(:file_set) { described_class.create }
   let(:derivative) do
     file_set.build_derivative.tap do |d|
       d.label = 'high'

@@ -5,10 +5,6 @@ require 'hyrax/specs/shared_specs'
 
 describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
   before(:all) do
-    class ActiveEncodeFileSet < ::FileSet
-      include Hyrax::ActiveEncode::FileSetBehavior
-    end
-
     class CustomOptionService
       def self.call(_file_set)
         [{ foo: 'bar' }]
@@ -17,18 +13,17 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
   end
 
   after(:all) do
-    Object.send(:remove_const, :ActiveEncodeFileSet)
     Object.send(:remove_const, :CustomOptionService)
   end
 
-  let(:valid_file_set) { ActiveEncodeFileSet.new }
+  let(:valid_file_set) { FileSet.new }
   let(:valid_mime) { service.send(:supported_mime_types).sample }
 
   before do
     allow(valid_file_set).to receive(:mime_type).and_return(valid_mime)
   end
 
-  let(:file_set) { ActiveEncodeFileSet.create }
+  let(:file_set) { FileSet.create }
   let(:encode_class) { ::ActiveEncode::Base }
   let(:options_service_class) { Hyrax::ActiveEncode::DefaultOptionService }
   let(:service) { described_class.new(file_set, encode_class: encode_class, options_service_class: options_service_class) }
@@ -43,7 +38,7 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
 
       it 'supports expected mime types' do
         supported_mime_types.each do |mime|
-          file_set = ActiveEncodeFileSet.new
+          file_set = FileSet.new
           allow(file_set).to receive(:mime_type).and_return(mime)
           expect(described_class.new(file_set).valid?).to be true
         end
@@ -116,7 +111,7 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
   # end
 
   describe '#derivative_url' do
-    let(:file_set) { ActiveEncodeFileSet.create }
+    let(:file_set) { FileSet.create }
     let(:external_uri) { "http://test.file" }
     let(:derivative) do
       file_set.build_derivative.tap do |d|
