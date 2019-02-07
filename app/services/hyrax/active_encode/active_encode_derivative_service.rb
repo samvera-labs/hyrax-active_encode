@@ -26,7 +26,7 @@ module Hyrax
         end
 
         def default_local_streaming
-          @@default_local_streaming ||= true
+          @@default_local_streaming = true if @@default_local_streaming.nil?
         end
       end
 
