@@ -26,7 +26,8 @@ module Hyrax
         end
 
         def default_local_streaming
-          @@default_local_streaming ||= true
+          @@default_local_streaming = true unless defined?(@@default_local_streaming)
+          @@default_local_streaming
         end
       end
 
