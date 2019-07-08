@@ -18,6 +18,10 @@ Gem::Specification.new do |s|
     f.match(%r{^(test|spec|features)/})
   end
 
+  s.required_ruby_version = '>= 2.4'
+
+  s.add_dependency "rails", "~> 5.0"
+
   s.add_dependency "active_encode", "~> 0.5"
   s.add_dependency "hyrax", "~> 2.1"
 
