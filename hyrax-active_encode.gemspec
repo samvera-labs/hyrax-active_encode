@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'engine_cart', '~> 2.2'
   s.add_development_dependency 'fcrepo_wrapper'
   s.add_development_dependency "rspec-rails", "~> 3.8"
+  s.add_development_dependency 'rspec_junit_formatter'
   s.add_development_dependency 'solr_wrapper'
   s.add_development_dependency 'webmock'
 end
