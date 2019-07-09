@@ -10,4 +10,8 @@ class TestAppGenerator < Rails::Generators::Base
   def install_hyrax
     generate 'hyrax:install', '-f'
   end
+
+  def install_hyrax_active_encode
+    generate 'hyrax:active_encode:install'
+  end
 end

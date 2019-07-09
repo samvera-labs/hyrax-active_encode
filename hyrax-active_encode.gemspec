@@ -18,6 +18,10 @@ Gem::Specification.new do |s|
     f.match(%r{^(test|spec|features)/})
   end
 
+  s.required_ruby_version = '>= 2.4'
+
+  s.add_dependency "rails", "~> 5.0"
+
   s.add_dependency "active_encode", "~> 0.5"
   s.add_dependency "hyrax", "~> 2.1"
 
@@ -27,6 +31,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'engine_cart', '~> 2.2'
   s.add_development_dependency 'fcrepo_wrapper'
   s.add_development_dependency "rspec-rails", "~> 3.8"
+  s.add_development_dependency 'rspec_junit_formatter'
   s.add_development_dependency 'solr_wrapper'
   s.add_development_dependency 'webmock'
 end
