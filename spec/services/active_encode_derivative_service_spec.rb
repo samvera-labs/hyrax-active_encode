@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'hyrax/specs/shared_specs'
 
-describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
+describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService, clean_repo: true do
   before(:all) do
     class CustomOptionService
       def self.call(_file_set)
@@ -89,7 +89,7 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
         let(:internal_options) { { file_set_id: file_set.id, local_streaming: true, work_id: parent_id, work_type: parent_type } }
         let(:options_service_class) { CustomOptionService }
         let(:parent_id) { work.id }
-        let(:parent_type) { work.class }
+        let(:parent_type) { work.class.name }
 
         before do
           allow(file_set).to receive(:parent_id).and_return(parent_id)
