@@ -16,20 +16,20 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
     Object.send(:remove_const, :CustomOptionService)
   end
 
-  let(:valid_file_set) { FileSet.new }
-  let(:valid_mime) { service.send(:supported_mime_types).sample }
-
-  before do
-    allow(valid_file_set).to receive(:mime_type).and_return(valid_mime)
-  end
-
   let(:work) { FactoryBot.create(:work_with_one_file) }
   let(:file_set) { work.file_sets.first }
   let(:encode_class) { ::ActiveEncode::Base }
   let(:options_service_class) { Hyrax::ActiveEncode::DefaultOptionService }
   let(:service) { described_class.new(file_set, encode_class: encode_class, options_service_class: options_service_class) }
 
-  it_behaves_like "a Hyrax::DerivativeService"
+  it_behaves_like "a Hyrax::DerivativeService" do
+    let(:valid_file_set) { FileSet.new }
+    let(:valid_mime) { service.send(:supported_mime_types).sample }
+
+    before do
+      allow(valid_file_set).to receive(:mime_type).and_return(valid_mime)
+    end
+  end
 
   describe '#valid?' do
     subject { service.valid? }
