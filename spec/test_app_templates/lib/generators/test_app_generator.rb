@@ -14,4 +14,8 @@ class TestAppGenerator < Rails::Generators::Base
   def install_hyrax_active_encode
     generate 'hyrax:active_encode:install'
   end
+
+  def generate_work_type
+    generate 'hyrax:work GenericWork'
+  end
 end
