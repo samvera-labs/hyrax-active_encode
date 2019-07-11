@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require 'rails_helper'
 
-describe FileSet, clean_repo: true do
+describe FileSet do
   let(:file_set) { described_class.create }
   let(:derivative) do
     file_set.build_derivative.tap do |d|

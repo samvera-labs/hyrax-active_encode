@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'hyrax/specs/shared_specs'
 
-describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService, clean_repo: true do
+describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
   before(:all) do
     class CustomOptionService
       def self.call(_file_set)
