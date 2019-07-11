@@ -28,3 +28,7 @@ By default, hyrax-active_encode will use ActiveEncode's FFmpeg adapter and defau
 `Hyrax::ActiveEncode::ActiveEncodeDerivativeService` can also be passed the ActiveEncode encode class to be used.  By default this will be `ActiveEncode::Base`.
 
 `Hyrax::ActiveEncode::WatchedEncode` is an optional `ActiveEncode::Base` subclass that includes `ActiveEncode::Polling` and `ActiveEncode::Persistence`.  This optional encode class allows for tracking the encode process by saving the data from the encoding service in the `ActiveEncode::EncodeRecord` database table and saving the encode's global id on its associated file set.
+
+## Development
+
+Run the whole test suite with `bundle exec rake ci`.
