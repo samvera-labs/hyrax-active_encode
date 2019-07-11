@@ -85,9 +85,10 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
       end
 
       context 'with custom options service class' do
-        let(:internal_options) { { file_set_id: file_set.id, local_streaming: true, work_id: parent_id } }
+        let(:internal_options) { { file_set_id: file_set.id, local_streaming: true, work_id: parent_id, work_type: parent_type } }
         let(:options_service_class) { CustomOptionService }
         let(:parent_id) { 'parent-id' }
+        let(:parent_type) { 'GenericWork' }
 
         before do
           allow(file_set).to receive(:parent_id).and_return(parent_id)
