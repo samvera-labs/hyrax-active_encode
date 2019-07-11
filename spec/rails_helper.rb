@@ -81,6 +81,7 @@ RSpec.configure do |config|
 
   # Copied from Hyrax's spec_helper and modified
   config.before :suite do
+    WebMock.disable_net_connect!(allow: ['localhost', '127.0.0.1', 'fedora', 'solr', 'matterhorn'])
     DatabaseCleaner.clean_with(:truncation)
     # Noid minting causes extra LDP requests which slow the test suite.
     # Hyrax.config.enable_noids = false
@@ -122,5 +123,6 @@ RSpec.configure do |config|
 
   config.after do
     DatabaseCleaner.clean
+    WebMock.allow_net_connect!
   end
 end
