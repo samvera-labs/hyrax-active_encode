@@ -91,10 +91,6 @@ describe Hyrax::ActiveEncode::ActiveEncodeDerivativeService do
         let(:parent_id) { work.id }
         let(:parent_type) { work.class.name }
 
-        before do
-          allow(file_set).to receive(:parent_id).and_return(parent_id)
-        end
-
         it 'calls the ActiveEncode runner with the original file, passing the encode class and the provided output options' do
           allow(Hydra::Derivatives::ActiveEncodeDerivatives).to receive(:create).with("sample.mp4", encode_class: encode_class, outputs: outputs)
           service.create_derivatives("sample.mp4")
