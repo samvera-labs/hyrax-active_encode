@@ -3,7 +3,8 @@ require 'rails_helper'
 
 describe Hyrax::ActiveEncode::WatchedEncode do
   let(:file_set) { FileSet.create }
-  let(:encode) { described_class.new("sample.mp4", file_set_id: file_set.id) }
+  let(:display_title) { 'A readable title.' }
+  let(:encode) { described_class.new("sample.mp4", file_set_id: file_set.id, display_title: display_title, work_id: file_set.id, work_type: 'GenericWork', progress: 100) }
   let(:completed_encode) do
     encode.clone.tap do |e|
       e.id = SecureRandom.uuid
