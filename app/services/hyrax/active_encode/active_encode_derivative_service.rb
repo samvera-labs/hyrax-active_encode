@@ -45,6 +45,7 @@ module Hyrax
         options.each do |option|
           option[:file_set_id] = file_set.id
           option[:work_id] = file_set.parent_id
+          option[:work_type] = file_set.parent.class.name
           option[:local_streaming] = true if local_streaming?
         end
         Hydra::Derivatives::ActiveEncodeDerivatives.create(filename, outputs: options, encode_class: @encode_class)

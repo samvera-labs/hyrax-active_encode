@@ -34,4 +34,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec_junit_formatter'
   s.add_development_dependency 'solr_wrapper'
   s.add_development_dependency 'webmock'
+  s.add_development_dependency 'factory_bot_rails'
 end
