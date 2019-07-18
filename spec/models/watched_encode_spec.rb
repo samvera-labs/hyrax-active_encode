@@ -2,9 +2,17 @@
 require 'rails_helper'
 
 describe Hyrax::ActiveEncode::WatchedEncode do
-  let(:file_set) { FileSet.create }
+  let(:work) { FactoryBot.create(:work_with_one_file) }
+  let(:file_set) { work.file_sets.first }
   let(:display_title) { 'A readable title.' }
-  let(:encode) { described_class.new("sample.mp4", file_set_id: file_set.id, display_title: display_title, work_id: file_set.id, work_type: 'GenericWork', progress: 100) }
+  let(:encode) do
+    described_class.new("sample.mp4",
+                        updated_at: Time.zone.now,
+                        created_at: Time.zone.now,
+                        file_set_id: file_set.id,
+                        work_id: work.id,
+                        work_type: 'GenericWork')
+  end
   let(:completed_encode) do
     encode.clone.tap do |e|
       e.id = SecureRandom.uuid
@@ -21,6 +29,14 @@ describe Hyrax::ActiveEncode::WatchedEncode do
     it 'stores the encode global id on the file set' do
       encode.create!
       expect(file_set.reload.encode_global_id).to eq encode.to_global_id.to_s
+    end
+    it 'stores sort and search fields on the encode record' do
+      encode.create!
+      encode_record = ActiveEncode::EncodeRecord.where(global_id: encode.to_global_id.to_s).first
+      expect(encode_record.work_type).to eq encode.options[:work_type]
+      expect(encode_record.work_id).to eq encode.options[:work_id]
+      expect(encode_record.file_set).to eq encode.options[:file_set_id]
+      expect(encode_record.display_title).to eq encode.input.url.split('/').last
     end
   end
 end

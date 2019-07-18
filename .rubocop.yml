@@ -18,6 +18,7 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/rails_helper.rb'
     - 'spec/models/file_set_spec.rb'
+    - 'spec/models/watched_encode_spec.rb'
     - 'spec/services/active_encode_derivative_service_spec.rb'
     - 'spec/services/derivative_service_spec.rb'
     - 'spec/services/default_option_service_spec.rb'
@@ -26,6 +27,7 @@ Metrics/BlockLength:
 RSpec/ExampleLength:
   Exclude:
     - 'spec/services/default_option_service_spec.rb'
+    - 'spec/models/watched_encode_spec.rb'
 
 Style/ClassVars:
   Exclude:
