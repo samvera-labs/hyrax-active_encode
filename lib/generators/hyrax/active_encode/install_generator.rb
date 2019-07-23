@@ -21,6 +21,10 @@ module Hyrax
         rake 'active_encode:install:migrations'
         rake 'db:migrate'
       end
+
+      def install_migrations
+        rake 'hyrax_active_encode:install:migrations'
+      end
     end
   end
 end
