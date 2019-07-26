@@ -25,7 +25,7 @@ require 'rails_helper'
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
 
-RSpec.describe ActiveEncodeEncodeRecordsController, type: :controller do
+RSpec.describe Hyrax::ActiveEncode::ActiveEncodeEncodeRecordsController, type: :controller do
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # ActiveEncodeEncodeRecordsController. Be sure to keep this updated too.
