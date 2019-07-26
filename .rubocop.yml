@@ -34,6 +34,10 @@ Metrics/LineLength:
   Exclude:
   - 'spec/factories/hyrax/active_encode_encode_records.rb'
 
+Metrics/MethodLength:
+  Exclude:
+    - 'app/controllers/hyrax/active_encode_encode_records_controller.rb'
+
 RSpec/ExampleLength:
   Exclude:
     - 'spec/controllers/hyrax/active_encode_encode_records_controller_spec.rb'
