@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 module Hyrax
   module ActiveEncode
-    class ActiveEncodeEncodeRecordsController < ApplicationController
-      before_action :set_active_encode_encode_record, only: [:show]
+    class EncodeRecordController < Hyrax::ActiveEncode::ApplicationController
+      before_action :set_encode_record, only: [:show]
       with_themed_layout 'dashboard'
 
-      # GET /active_encode_encode_records
-      # GET /active_encode_encode_records.json
+      # GET /encode_records
+      # GET /encode_records.json
       def index
         authorize! :read, :encode_dashboard
-        @active_encode_encode_records = ::ActiveEncode::EncodeRecord.all
+        @encode_records = ::ActiveEncode::EncodeRecord.all
       end
 
-      # GET /active_encode_encode_records/1
-      # GET /active_encode_encode_records/1.json
+      # GET /encode_records/1
+      # GET /encode_records/1.json
       def show
         authorize! :read, :encode_dashboard
       end
 
-      # POST /active_encode_encode_records/paged_index
+      # POST /encode_records/paged_index
       def paged_index
         # Encode records for index page are loaded dynamically by jquery datatables javascript which
         # requests the html for only a limited set of rows at a time.
@@ -60,7 +60,7 @@ module Hyrax
             encode_presenter = ActiveEncodeEncodePresenter.new(encode)
             [
               encode_presenter.status,
-              view_context.link_to(encode_presenter.id, active_encode_encode_record_path(encode_presenter.id)),
+              view_context.link_to(encode_presenter.id, encode_record_path(encode_presenter.id)),
               "<progress value=\"#{encode_presenter.progress}\" max=\"100\"></progress>",
               encode_presenter.title,
               view_context.link_to(encode_presenter.file_set_id, encode_presenter.file_set_url),
@@ -79,8 +79,8 @@ module Hyrax
       private
 
         # Use callbacks to share common setup or constraints between actions.
-        def set_active_encode_encode_record
-          @active_encode_encode_record = ::ActiveEncode::EncodeRecord.find(params[:id])
+        def set_encode_record
+          @encode_record = ::ActiveEncode::EncodeRecord.find(params[:id])
         end
     end
   end

@@ -24,13 +24,14 @@ require 'rails_helper'
 # expectations of assigns and templates rendered. These features have been
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
+require 'rails_helper'
 
-RSpec.describe Hyrax::ActiveEncode::ActiveEncodeEncodeRecordsController, type: :controller do
+RSpec.describe Hyrax::ActiveEncode::EncodeRecordController, type: :controller do
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # ActiveEncodeEncodeRecordsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
-  let(:active_encode_encode_record) { FactoryBot.create(:active_encode_encode_record) }
+  let(:encode_record) { FactoryBot.create(:encode_record) }
   let(:user) { create(:admin) }
 
   before do
@@ -55,7 +56,7 @@ RSpec.describe Hyrax::ActiveEncode::ActiveEncodeEncodeRecordsController, type: :
 
   describe "GET #show" do
     it "returns a success response" do
-      get :show, params: { id: active_encode_encode_record.to_param }, session: valid_session
+      get :show, params: { id: encode_record.to_param }, session: valid_session
       expect(response).to be_successful
     end
 
@@ -71,7 +72,7 @@ RSpec.describe Hyrax::ActiveEncode::ActiveEncodeEncodeRecordsController, type: :
 
   describe "POST #paged_index" do
     before :all do
-      FactoryBot.create_list(:active_encode_encode_record, 11)
+      FactoryBot.create_list(:encode_record, 11)
     end
 
     context 'paging' do
