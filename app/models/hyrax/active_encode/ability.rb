@@ -2,6 +2,7 @@
 module Hyrax
   module ActiveEncode
     module Ability
+      extend ActiveSupport::Concern
       included do
         self.ability_logic += [:encode_dashboard_permissions]
       end

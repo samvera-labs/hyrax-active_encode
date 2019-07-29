@@ -25,6 +25,12 @@ module Hyrax
       def install_migrations
         rake 'hyrax_active_encode:install:migrations'
       end
+
+      def insert_abilities
+        insert_into_file 'app/models/ability.rb', after: /Hyrax::Ability/ do
+          "\n  include Hyrax::ActiveEncode::Ability\n"
+        end
+      end
     end
   end
 end

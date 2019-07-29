@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe "hyrax/active_encode/encode_records/show", type: :view do
+RSpec.describe "hyrax/active_encode/encode_record/show", type: :view do
   before do
     @encode_record = assign(:encode_record, FactoryBot.create(:encode_record))
   end
