@@ -30,12 +30,12 @@ module Hyrax
         search_value = params['search']['value']
         @encode_records = if search_value.present?
                             ::ActiveEncode::EncodeRecord.where %(
-                              state ILIKE :search_value OR
-                              CAST(id as varchar) ILIKE :search_value OR
-                              CAST(progress as varchar) ILIKE :search_value OR
-                              display_title ILIKE :search_value OR
-                              file_set ILIKE :search_value OR
-                              work_id ILIKE :search_value OR
+                              state LIKE :search_value OR
+                              CAST(id as varchar) LIKE :search_value OR
+                              CAST(progress as varchar) LIKE :search_value OR
+                              display_title LIKE :search_value OR
+                              file_set LIKE :search_value OR
+                              work_id LIKE :search_value OR
                               CAST(created_at as varchar) LIKE :search_value
                             ), search_value: "%#{search_value}%"
                           else
@@ -57,10 +57,10 @@ module Hyrax
           "recordsTotal": records_total,
           "recordsFiltered": filtered_records_total,
           "data": @encode_records.collect do |encode|
-            encode_presenter = ActiveEncodeEncodePresenter.new(encode)
+            encode_presenter = ActiveEncode::EncodePresenter.new(encode)
             [
               encode_presenter.status,
-              view_context.link_to(encode_presenter.id, encode_record_path(encode_presenter.id)),
+              view_context.link_to(encode_presenter.id, Rails.application.routes.url_helpers.encode_record_path(encode)),
               "<progress value=\"#{encode_presenter.progress}\" max=\"100\"></progress>",
               encode_presenter.title,
               view_context.link_to(encode_presenter.file_set_id, encode_presenter.file_set_url),
