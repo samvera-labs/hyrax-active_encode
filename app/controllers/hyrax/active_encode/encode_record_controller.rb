@@ -3,7 +3,7 @@ module Hyrax
   module ActiveEncode
     class EncodeRecordController < Hyrax::ActiveEncode::ApplicationController
       before_action :set_encode_record, only: [:show]
-      with_themed_layout 'dashboard'
+      # with_themed_layout 'dashboard'
 
       # GET /encode_records
       # GET /encode_records.json

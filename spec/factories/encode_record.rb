@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :encode_record, class: ActiveEncode::EncodeRecord do
+  factory :encode_record, class: ::ActiveEncode::EncodeRecord do
     sequence(:global_id) { |n| "app://ActiveEncode/Encode/#{n}" }
     state { "running" }
     adapter { "ffmpeg" }
