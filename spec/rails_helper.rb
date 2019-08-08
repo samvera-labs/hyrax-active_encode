@@ -46,7 +46,7 @@ end
 
 ActiveEncode::Base.engine_adapter = :test
 
-FactoryBot.definition_file_paths = [File.expand_path("spec/factories", Hyrax::Engine.root)]
+FactoryBot.definition_file_paths += [File.expand_path("spec/factories", Hyrax::Engine.root)]
 FactoryBot.find_definitions
 
 RSpec.configure do |config|
@@ -126,4 +126,6 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
     WebMock.allow_net_connect!
   end
+
+  config.include Devise::Test::ControllerHelpers, type: :controller
 end

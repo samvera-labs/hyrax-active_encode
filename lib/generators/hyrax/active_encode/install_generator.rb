@@ -25,6 +25,17 @@ module Hyrax
       def install_migrations
         rake 'hyrax_active_encode:install:migrations'
       end
+
+      def mount_routes
+        route "mount Hyrax::ActiveEncode::Engine, at: '/'"
+      end
+
+      # we're going to inject this into the local app, so that it's easy to disable.
+      def insert_abilities
+        insert_into_file 'app/models/ability.rb', after: /Hyrax::Ability/ do
+          "\n  include Hyrax::ActiveEncode::Ability\n"
+        end
+      end
     end
   end
 end

@@ -5,6 +5,9 @@ AllCops:
   TargetRubyVersion: 2.3
   DisplayCopNames: true
 
+Lint/Debugger:
+  Enabled: false
+
 Naming/FileName:
   Exclude:
     - 'Gemfile'
@@ -14,8 +17,14 @@ Bundler/DuplicatedGem:
   Exclude:
     - 'Gemfile'
 
+Metrics/AbcSize:
+  Exclude:
+    - 'app/controllers/hyrax/active_encode/encode_records_controller.rb'
+
 Metrics/BlockLength:
   Exclude:
+    - 'app/controllers/hyrax/active_encode/encode_records_controller.rb'
+    - 'spec/controllers/hyrax/active_encode/encode_records_controller_spec.rb'
     - 'spec/rails_helper.rb'
     - 'spec/models/file_set_spec.rb'
     - 'spec/models/watched_encode_spec.rb'
@@ -24,10 +33,20 @@ Metrics/BlockLength:
     - 'spec/services/default_option_service_spec.rb'
     - 'spec/services/persist_active_encode_derivatives_spec.rb'
 
+Metrics/LineLength:
+  Exclude:
+  - 'spec/factories/encode_record.rb'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'app/controllers/hyrax/active_encode/encode_records_controller.rb'
+
 RSpec/ExampleLength:
   Exclude:
+    - 'spec/controllers/hyrax/active_encode/encode_records_controller_spec.rb'
     - 'spec/services/default_option_service_spec.rb'
     - 'spec/models/watched_encode_spec.rb'
+    - 'spec/views/hyrax/active_encode/encode_records/index.html.erb_spec.rb'
 
 Style/ClassVars:
   Exclude:
