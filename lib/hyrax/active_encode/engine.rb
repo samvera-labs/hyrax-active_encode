@@ -18,6 +18,11 @@ module Hyrax
         Hydra::Derivatives::ActiveEncodeDerivatives.output_file_service = Hyrax::ActiveEncode::PersistActiveEncodeDerivatives
       end
 
+      # Add engine's assets to Rails app's precompile list.
+      initializer "hyrax.active_encode.assets.precompile" do |app|
+        app.config.assets.precompile += %w[hyrax/active_encode/hyrax_active_encode.scss]
+      end
+
       initializer "hyrax.active_encode.dashboard_sidebar_link" do
         # We need to explicitly require hyrax/search_state in Hyrax < 3
         # This was fixed in https://github.com/samvera/hyrax/pull/3686
