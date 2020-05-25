@@ -11,7 +11,7 @@ module Hyrax
         ::FileSet.find(file_set_id).update(encode_global_id: encode.to_global_id.to_s) if file_set_id
       end
 
-      def persistence_model_attributes(encode)
+      def persistence_model_attributes(encode, create_options = nil)
         display_title = encode.input.url.to_s.split('/').last
         options_hash = { display_title: display_title, work_id: encode.options[:work_id], work_type: encode.options[:work_type], file_set: encode.options[:file_set_id] }
         super.merge(options_hash.select { |_, v| v.present? })
