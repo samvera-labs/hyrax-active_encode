@@ -32,3 +32,6 @@ By default, hyrax-active_encode will use ActiveEncode's FFmpeg adapter and defau
 ## Development
 
 Run the whole test suite with `bundle exec rake ci`.
+
+## More information
+Check out our [2018 Samvera Connect Workshop](https://github.com/avalonmediasystem/connect2018-workshop) for more details
