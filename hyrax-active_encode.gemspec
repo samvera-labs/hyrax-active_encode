@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 5.0"
 
   s.add_dependency "active_encode", "~> 0.5"
-  s.add_dependency "hyrax", "~> 2.1"
+  s.add_dependency "hyrax", '< 4.0'
 
   s.add_development_dependency 'bixby'
   s.add_development_dependency 'coffee-rails'
